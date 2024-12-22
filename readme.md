@@ -19,7 +19,7 @@ The system should theoretically allow an unlimited number of person records. Eac
     - UUID
     - First Name
     - Last Name
-    - Company
+    - Firm
     - Contact Information:
     - Type: Phone Number, Email Address, Location
     - Content
