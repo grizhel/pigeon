@@ -36,7 +36,7 @@ Report requests will operate asynchronously. When a user requests a report, the 
 
 ## Technical Expectations
 Technologies to Be Used
-    - .NET Core
-    - Git
-    - PostgreSQL or MongoDB
-    - Message Queue system (e.g., Kafka)
+- .NET Core
+- Git
+- PostgreSQL or MongoDB
+- Message Queue system (e.g., Kafka)
