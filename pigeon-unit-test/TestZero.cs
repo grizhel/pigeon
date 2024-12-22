@@ -1,14 +1,16 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace pigeon_unit_test
+﻿namespace pigeon_unit_test
 {
-    [TestClass]
     public class TestZero
     {
-        [TestMethod]
+        [SetUp]
+        public void Setup()
+        {
+        }
+
+        [Test]
         public void Test()
         {
+            Assert.Pass();
         }
     }
 }
