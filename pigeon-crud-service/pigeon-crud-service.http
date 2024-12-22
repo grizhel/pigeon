@@ -1,0 +1,6 @@
+@pigeon_crud_service_HostAddress = http://localhost:5177
+
+GET {{pigeon_crud_service_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
