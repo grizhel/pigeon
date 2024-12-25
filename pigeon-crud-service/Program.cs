@@ -20,9 +20,9 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddScoped<IService<Firm>>();
-builder.Services.AddScoped<IService<Contact>>();
-builder.Services.AddScoped<IService<Location>>();
+builder.Services.AddScoped<FirmService>();
+builder.Services.AddScoped<ContactService>();
+builder.Services.AddScoped<LocationService>();
 
 builder.Services.AddDbContext<PigeonDBContext>(options =>
 {
@@ -61,7 +61,8 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.Configure<IAppOptions>(builder.Configuration.GetRequiredSection("AppOptions")).AddSingleton<IAppOptions>();
+var appOptionsSection = builder.Configuration.GetSection("AppOptions");
+builder.Services.Configure<IAppOptions>(appOptionsSection);
 
 
 var app = builder.Build();

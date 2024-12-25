@@ -32,23 +32,30 @@ public class ContactController : ControllerBase, IController<Contact>
 		return Ok(contactList);
 	}
 
+	/// <summary>
+	/// Key-Value Dictionary would not let filtering two or more for same entity id parameter.
+	/// To achieve this, arguing filterParams object must be detailed more.
+	/// </summary>
+	/// <param name="filterParams"></param>	
+	/// <returns></returns>
 	public ActionResult<List<Contact>> Filter(IFilterParams filterParams)
 	{
-		throw new NotImplementedException();
+		var list = _contactService.Filter(filterParams);
+		return Ok(list);
 	}
 
 	public ActionResult<ReactedResult<Contact>> Post(Contact t)
 	{
-		throw new NotImplementedException();
+		return _contactService.Post(t);
 	}
 
 	public ActionResult<ReactedResult<Contact>> Put(Contact t)
 	{
-		throw new NotImplementedException();
+		return _contactService.Put(t);
 	}
 
 	public ActionResult<ReactedResult<Contact>> Delete(Guid id)
 	{
-		throw new NotImplementedException();
+		return _contactService.Delete(id);
 	}
 }

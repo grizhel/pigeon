@@ -7,10 +7,14 @@ namespace pigeon_crud_service.Models.DBModels;
 [Table(nameof(Location))]
 public class Location : ILocation
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid Id { get; set; }
+	[Key]
+	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+	public Guid Id { get; set; }
 
-    [Column(TypeName = "varchar(63)")]
-    public required string Name { get; set; }
+	[Column(TypeName = "varchar(63)")]
+	public required string Name { get; set; }
+
+	public string NVIAdress { get; set; }
+
+	public string Adress { get; set; }
 }

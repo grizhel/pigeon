@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using pigeon_crud_service.Models;
@@ -11,9 +12,11 @@ using pigeon_crud_service.Models;
 namespace pigeon_crud_service.Migrations
 {
     [DbContext(typeof(PigeonDBContext))]
-    partial class PigeonDBContextModelSnapshot : ModelSnapshot
+    [Migration("20241225123636_models_update")]
+    partial class models_update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

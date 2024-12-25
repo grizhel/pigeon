@@ -1,6 +1,8 @@
 ﻿using System.Dynamic;
 using System.Linq;
+using System.Net;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.Options;
 using pigeon_crud_service.Models;
 using pigeon_crud_service.Models.DBModels;
 using pigeon_crud_service.Utils;
@@ -15,7 +17,7 @@ namespace pigeon_crud_service.Services
 	{
 		private readonly PigeonDBContext _dbContext;
 
-		public ContactService(PigeonDBContext dbContext, IAppOptions appOptions) : base(appOptions)
+		public ContactService(PigeonDBContext dbContext, IOptions<IAppOptions> appOptions) : base(appOptions)
 		{
 			_dbContext = dbContext;
 		}
@@ -49,6 +51,7 @@ namespace pigeon_crud_service.Services
 			}
 
 			var locationIdStr = filterParams.Params.GetValueOrDefault("locationId");
+
 			if (firmIdStr != null)
 			{
 				if (Guid.TryParse(firmIdStr, out var locationId))
@@ -81,9 +84,14 @@ namespace pigeon_crud_service.Services
 			_dbContext.SaveChanges();
 			return ReactedResult<Contact>.Successful(contact);
 		}
+
 		public ReactedResult<Contact> Delete(Guid id)
 		{
 			var contactEntity = _dbContext.Contacts.FirstOrDefault(q => q.Id == id);
+			if(contactEntity == null)
+			{
+				return ReactedResult<Contact>.Failed(HttpStatusCode.NotFound, $"There is not any Contact with Id of {id}");
+			}
 			_dbContext.Contacts.Remove(contactEntity);
 			_dbContext.SaveChanges();
 			return ReactedResult<Contact>.Successful(contactEntity);
