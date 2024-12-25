@@ -17,4 +17,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\pigeon-lib\pigeon-lib.csproj" />
+  </ItemGroup>
+
 </Project>
