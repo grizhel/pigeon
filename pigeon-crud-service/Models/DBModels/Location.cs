@@ -14,7 +14,7 @@ public class Location : ILocation
 	[Column(TypeName = "varchar(63)")]
 	public required string Name { get; set; }
 
-	public string NVIAdress { get; set; }
+	public string NVIAddress { get; set; }
 
-	public string Adress { get; set; }
+	public string Address { get; set; }
 }
