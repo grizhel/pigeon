@@ -8,14 +8,16 @@ namespace pigeon_crud_service.Models.DBModels;
 [Table(nameof(ContactInfo))]
 public class ContactInfo : IContactInfo
 {
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid Id { get; set; }
+	[Key]
+	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+	public Guid Id { get; set; }
 
-    [ForeignKey(nameof(IContact))]
-    public Guid ContactId { get; set; }
+	[ForeignKey(nameof(Contact))]
+	public Guid ContactId { get; set; }
 
-    public ContactTypes ContactType { get; set; }
+	public required ContactTypes ContactType { get; set; }
 
-    public IContact? Contact { get; set; }
+	public Contact? Contact { get; set; }
+
+	public required string Info { get; set; }
 }

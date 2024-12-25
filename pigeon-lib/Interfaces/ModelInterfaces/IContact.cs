@@ -15,8 +15,4 @@ public interface IContact
     string Surname { get; set; }
 
     Guid FirmId { get; set; }
-
-    IFirm Firm { get; set; }
-
-    ICollection<IContactInfo> ContactInformations { get; set; }
 }

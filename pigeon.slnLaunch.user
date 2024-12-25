@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "pigeon-report-service\\pigeon-report-service.csproj",
+        "Action": "StartWithoutDebugging"
+      },
+      {
+        "Path": "pigeon-crud-service\\pigeon-crud-service.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "pigeon-lib\\pigeon-lib.csproj",
+        "Action": "StartWithoutDebugging"
+      }
+    ]
+  }
+]

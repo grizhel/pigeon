@@ -7,8 +7,4 @@ public interface IFirm
     string Name { get; set; }
 
     Guid LocationId { get; set; }
-
-    ILocation Location { get; set; }
-
-    ICollection<IContact> Contacts { get; set; }
 }

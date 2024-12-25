@@ -4,35 +4,32 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using pigeon_crud_service.Models;
 using pigeon_crud_service.Services;
+using Microsoft.EntityFrameworkCore.Migrations;
+using pigeon_lib.Interfaces.ServiceInterfaces;
+using pigeon_crud_service.Models.DBModels;
+using pigeon_crud_service.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
-    // open api is currently using system.text.json
     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-    //options.JsonSerializerOptions.Converters.Add(new NetTopologySuite.IO.Converters.GeoJsonConverterFactory());
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 }); ;
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddScoped<FirmService>();
-builder.Services.AddScoped<ContactService>();
-builder.Services.AddScoped<LocationService>();
+builder.Services.AddScoped<IService<Firm>>();
+builder.Services.AddScoped<IService<Contact>>();
+builder.Services.AddScoped<IService<Location>>();
 
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+builder.Services.AddDbContext<PigeonDBContext>(options =>
 {
-    app.MapOpenApi();
-}
-
-app.UseCors(x => x.SetIsOriginAllowed(t => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials());
-
+	_ = options.UseNpgsql(builder.Configuration.GetConnectionString("Pigeon_v1"), x
+							 => x.MigrationsHistoryTable(HistoryRepository.DefaultTableName,
+							 builder.Configuration.GetConnectionString("Pigeon_v1_schema")));
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -64,6 +61,17 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.Configure<IAppOptions>(builder.Configuration.GetRequiredSection("AppOptions")).AddSingleton<IAppOptions>();
+
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.MapOpenApi();
+}
+
+app.UseCors(x => x.SetIsOriginAllowed(t => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 
 
 app.UseHttpsRedirection();

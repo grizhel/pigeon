@@ -16,7 +16,7 @@ public class Firm : IFirm
 
     public Guid LocationId { get; set; }
 
-    public ILocation? Location { get; set; }
+    public Location? Location { get; set; }
 
-    public ICollection<IContact>? Contacts { get; set; }
+    public ICollection<Contact>? Contacts { get; set; }
 }
