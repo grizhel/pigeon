@@ -14,5 +14,5 @@ public interface IContact
 
     string Surname { get; set; }
 
-    Guid FirmId { get; set; }
+    Guid? FirmId { get; set; }
 }

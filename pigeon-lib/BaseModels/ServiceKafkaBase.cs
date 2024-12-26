@@ -12,11 +12,11 @@ namespace pigeon_lib.BaseModels
 {
 	public class ServiceKafkaBase
 	{
-		private readonly KafkaSettings kafkaSettings;
+		private readonly KafkaOptions kafkaOptions;
 
-		public ServiceKafkaBase(IOptions<KafkaSettings>? options = null) 
+		public ServiceKafkaBase(IOptions<KafkaOptions>? options = null) 
 		{
-			kafkaSettings = options?.Value ?? new();
+			kafkaOptions = options?.Value ?? new();
 		}
 		/// <summary>
 		/// Eventhough the method is not to be used by all services, it was convenient to implement here under the circumstances.
@@ -25,7 +25,7 @@ namespace pigeon_lib.BaseModels
 		/// <param name="data"></param>
 		public void SendMessage(string topic, object data)
 		{
-			Hermes.SendMessage(kafkaSettings, topic, data);
+			Hermes.SendMessage(kafkaOptions, topic, data);
 		}
 
 		/// <summary>
@@ -35,7 +35,7 @@ namespace pigeon_lib.BaseModels
 		/// <param name="data"></param>
 		public void Subscribe<T>(string topic, object data)
 		{
-			Hermes.Subscribe<T>(kafkaSettings, topic);
+			Hermes.Subscribe<T>(kafkaOptions, topic);
 		}
 	}
 }
