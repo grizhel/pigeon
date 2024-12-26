@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Options;
 using pigeon_crud_service.Models;
 using pigeon_crud_service.Models.DBModels;
-using pigeon_crud_service.Utils;
+using pigeon_lib.BaseModels;
 using pigeon_lib.Enums;
 using pigeon_lib.Interfaces.ModelInterfaces;
 using pigeon_lib.Interfaces.ServiceInterfaces;
@@ -17,15 +17,16 @@ namespace pigeon_crud_service.Services
 	public class ContactService : ServiceBase, IService<Contact>
 	{
 		private readonly PigeonDBContext _dbContext;
+		private readonly KafkaService _kafkaService;
 
-		public ContactService(PigeonDBContext dbContext, IOptions<IAppOptions> appOptions) : base(appOptions)
+		public ContactService(PigeonDBContext dbContext, IOptions<AppOptions> appOptions, KafkaService kafkaService) : base(appOptions)
 		{
 			_dbContext = dbContext;
+			_kafkaService = kafkaService;
 		}
 
 		public Contact? Get(Guid id)
 		{
-			// FirstOrDefault is used for time efficiency.
 			return _dbContext.Contacts.FirstOrDefault(q => q.Id == id);
 		}
 
@@ -75,6 +76,7 @@ namespace pigeon_crud_service.Services
 		{
 			_dbContext.Contacts.Add(contact);
 			_dbContext.SaveChanges();
+			_kafkaService.SendMessage(KafkaTopics.ContactIsCreated.ToString(), contact);
 			return ReactedResult<Contact>.Successful(contact);
 		}
 
@@ -83,6 +85,7 @@ namespace pigeon_crud_service.Services
 			var contactEntity =  _dbContext.Contacts.FirstOrDefault(q => q.Id == contact.Id);
 			_dbContext.Contacts.Update(contact);
 			_dbContext.SaveChanges();
+			_kafkaService.SendMessage(KafkaTopics.ContactIsUpdated.ToString(), contact);
 			return ReactedResult<Contact>.Successful(contact);
 		}
 

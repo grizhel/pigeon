@@ -5,8 +5,8 @@ using Microsoft.OpenApi.Models;
 using pigeon_crud_service.Models;
 using pigeon_crud_service.Services;
 using Microsoft.EntityFrameworkCore.Migrations;
-using pigeon_crud_service.Utils;
 using pigeon_lib.Utils;
+using dotnet_third_party_integrations_core.kafka.models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,8 +63,8 @@ builder.Services.AddSwaggerGen(c =>
 var appOptionsSection = builder.Configuration.GetSection("AppOptions");
 builder.Services.Configure<IAppOptions>(appOptionsSection);
 
-var kafkaSettingsSection = builder.Configuration.GetSection("KafkaSettings");
-builder.Services.Configure<KafkaSettings>(kafkaSettingsSection);
+var kafkaSettingsSection = builder.Configuration.GetSection("KafkaConfig");
+builder.Services.Configure<IKafkaSettings>(kafkaSettingsSection);
 
 
 var app = builder.Build();

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Options;
 using pigeon_crud_service.Models;
 using pigeon_crud_service.Models.DBModels;
-using pigeon_crud_service.Utils;
+using pigeon_lib.BaseModels;
 using pigeon_lib.Enums;
 using pigeon_lib.Interfaces.ModelInterfaces;
 using pigeon_lib.Interfaces.ServiceInterfaces;
@@ -18,7 +18,7 @@ namespace pigeon_crud_service.Services
 	{
 		private readonly PigeonDBContext _dbContext;
 
-		public FirmService(PigeonDBContext dbContext, IOptions<IAppOptions> appOptions) : base(appOptions)
+		public FirmService(PigeonDBContext dbContext, IOptions<AppOptions> appOptions) : base(appOptions)
 		{
 			_dbContext = dbContext;
 		}
