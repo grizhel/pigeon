@@ -12,4 +12,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="dotnet-third-party-integrations-core">
+      <HintPath>..\..\dotnet-third-party-integrations-core\bin\Release\net9.0\dotnet-third-party-integrations-core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
