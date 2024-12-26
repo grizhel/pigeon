@@ -24,4 +24,10 @@
     <ProjectReference Include="..\pigeon-report-service\pigeon-report-service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="dotnet-third-party-integrations-core">
+      <HintPath>..\..\dotnet-third-party-integrations-core\bin\Release\net9.0\dotnet-third-party-integrations-core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

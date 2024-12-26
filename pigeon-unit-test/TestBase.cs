@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Moq;
 using Npgsql;
 using pigeon_crud_service.Models;
+using pigeon_report_service.Models;
 using System;
 
 
@@ -13,6 +14,7 @@ namespace pigeon_unit_test
 	{
 
 		protected readonly PigeonDBContext dbContext;
+		protected readonly PigeonReportDBContext reportDbContext;
 		protected readonly dynamic data;
 		private bool disposedValue;
 
@@ -20,8 +22,8 @@ namespace pigeon_unit_test
 		{
 			data = Scenario.CreateDbScenario();
 			dbContext = PrepareDatabase("EF-InMemory");
+			reportDbContext = PrepareReportDatabase("EF-InMemory");
 		}
-
 
 		private PigeonDBContext PrepareDatabase(string databaseType)
 		{
@@ -39,13 +41,36 @@ namespace pigeon_unit_test
 					pigeonDBContext.Database.EnsureDeleted();
 					pigeonDBContext.Database.EnsureCreated();
 
-					
+
 					pigeonDBContext.Contacts.Add(data.contacts);
 					pigeonDBContext.Firms.Add(data.firms);
 					pigeonDBContext.Locations.Add(data.locations);
 					pigeonDBContext.ContactInformations.Add(data.contactInformations);
 					pigeonDBContext.SaveChanges();
 
+					break;
+				default:
+					throw new Exception();
+			}
+
+			return pigeonDBContext;
+		}
+
+		private PigeonReportDBContext PrepareReportDatabase(string databaseType)
+		{
+			DbContextOptions options;
+			PigeonReportDBContext pigeonDBContext;
+			switch (databaseType)
+			{
+				case "EF-InMemory":
+					options = new DbContextOptionsBuilder<PigeonReportDBContext>()
+							.ConfigureWarnings(x => x.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning))
+							.UseInMemoryDatabase("PigeonDBContext")
+							.Options;
+					pigeonDBContext = new PigeonReportDBContext(options, null);
+
+					pigeonDBContext.Database.EnsureDeleted();
+					pigeonDBContext.Database.EnsureCreated();
 					break;
 				default:
 					throw new Exception();
