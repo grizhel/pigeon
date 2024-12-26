@@ -7,6 +7,7 @@ using pigeon_lib.Utils;
 using pigeon_report_service.Services;
 using pigeon_report_service.Models;
 using dotnet_third_party_integrations_core.kafka.models;
+using pigeon_report_service.Utils.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<ReportService>();
+builder.Services.AddScoped<KafkaService>();
+builder.Services.AddHostedService<KafkaConsumer>();
 
 builder.Services.AddDbContext<PigeonReportDBContext>(options =>
 {
@@ -33,6 +36,9 @@ builder.Services.AddSwaggerGen(c =>
 {
 	c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
 	{
+		Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
 		Name = "Authorization",
 		In = ParameterLocation.Header,
 		Type = SecuritySchemeType.ApiKey,
@@ -63,13 +69,15 @@ builder.Services.Configure<IAppOptions>(appOptionsSection);
 
 
 var kafkaOptionsSection = builder.Configuration.GetSection("KafkaOptions");
-builder.Services.Configure<IKafkaSettings>(kafkaOptionsSection);
+builder.Services.Configure<KafkaOptions>(kafkaOptionsSection);
+
+
 
 var app = builder.Build();
-
 if (app.Environment.IsDevelopment())
 {
-	app.MapOpenApi();
+	app.UseSwagger();
+	app.UseSwaggerUI();
 }
 
 app.UseCors(x => x.SetIsOriginAllowed(t => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials());
