@@ -26,7 +26,7 @@
 
   <ItemGroup>
     <Reference Include="dotnet-third-party-integrations-core">
-      <HintPath>..\..\dotnet-third-party-integrations-core\bin\Release\net9.0\dotnet-third-party-integrations-core.dll</HintPath>
+      <HintPath>..\..\dotnet-third-party-integrations-core\bin\Debug\net9.0\dotnet-third-party-integrations-core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

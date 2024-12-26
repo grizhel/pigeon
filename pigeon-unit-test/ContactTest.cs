@@ -21,7 +21,7 @@ namespace pigeon_unit_test
 	{
 		private readonly ContactService contactService;
 
-		public ContactTest(IOptions<AppOptions> options, IOptions<IKafkaSettings> kafkaOptions)
+		public ContactTest(IOptions<AppOptions> options, IOptions<KafkaOptions> kafkaOptions)
 		{
 			options.Value.ListLimit = 8;
 			contactService = new(dbContext, options, null);

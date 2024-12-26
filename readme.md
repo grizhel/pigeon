@@ -45,3 +45,4 @@ Technologies to Be Used
 ## Notes
 
 - There would be necessity parameters for all models, however the system (which should be implemented) had solid requirements.
+- Some features such as logger mechanism are not implemented.

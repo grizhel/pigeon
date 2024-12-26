@@ -1,18 +1,16 @@
 [
   {
-    "Name": "New Profile",
+    "Name": "Standard",
     "Projects": [
       {
         "Path": "pigeon-report-service\\pigeon-report-service.csproj",
-        "Action": "StartWithoutDebugging"
+        "Action": "Start",
+        "DebugTarget": "http"
       },
       {
         "Path": "pigeon-crud-service\\pigeon-crud-service.csproj",
-        "Action": "Start"
-      },
-      {
-        "Path": "pigeon-lib\\pigeon-lib.csproj",
-        "Action": "StartWithoutDebugging"
+        "Action": "Start",
+        "DebugTarget": "http"
       }
     ]
   }
