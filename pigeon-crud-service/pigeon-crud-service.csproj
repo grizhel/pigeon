@@ -6,7 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>pigeon_crud_service</RootNamespace>
     <UserSecretsId>f0db64d4-9dd1-4556-a7f7-6b3170ea84e6</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,8 +24,7 @@
     <PackageReference Include="Npgsql" Version="9.0.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.2" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="7.2.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="7.2.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,12 +32,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Utils\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="dotnet-third-party-integrations-core">
-      <HintPath>..\..\dotnet-third-party-integrations-core\bin\Release\net9.0\dotnet-third-party-integrations-core.dll</HintPath>
+      <HintPath>..\..\dotnet-third-party-integrations-core\bin\Debug\net9.0\dotnet-third-party-integrations-core.dll</HintPath>
     </Reference>
   </ItemGroup>
 

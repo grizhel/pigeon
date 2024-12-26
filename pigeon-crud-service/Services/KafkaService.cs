@@ -7,6 +7,6 @@ namespace pigeon_crud_service.Services
 {
 	public class KafkaService : ServiceKafkaBase
 	{
-		public KafkaService(IOptions<KafkaSettings>? options) : base(options) { }
+		public KafkaService(IOptions<KafkaOptions>? options) : base(options) { }
 	}
 }

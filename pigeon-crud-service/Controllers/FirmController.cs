@@ -8,6 +8,7 @@ using pigeon_lib.Utils;
 
 namespace pigeon_crud_service.Controllers;
 
+[ApiController, Route($"api/v1/{nameof(Firm)}/[controller]/[action]")]
 public class FirmController : ControllerBase, IController<Firm>
 {
 	private readonly IService<Firm> _firmService;
@@ -17,6 +18,7 @@ public class FirmController : ControllerBase, IController<Firm>
 		_firmService = firmService;
 	}
 
+	[HttpGet(nameof(Get))]
 	public ActionResult<Firm> Get(Guid id)
 	{
 		var firm = _firmService.Get(id);
@@ -27,6 +29,7 @@ public class FirmController : ControllerBase, IController<Firm>
 		return Ok(firm);
 	}
 
+	[HttpGet(nameof(GetList))]
 	public ActionResult<List<Firm>> GetList()
 	{
 		var firmList = _firmService.GetList();
@@ -39,22 +42,26 @@ public class FirmController : ControllerBase, IController<Firm>
 	/// </summary>
 	/// <param name="filterParams"></param>	
 	/// <returns></returns>
+	[HttpGet(nameof(Filter))]
 	public ActionResult<List<Firm>> Filter(IFilterParams filterParams)
 	{
 		var list = _firmService.Filter(filterParams);
 		return Ok(list);
 	}
 
+	[HttpPost(nameof(Post))]
 	public ActionResult<ReactedResult<Firm>> Post(Firm t)
 	{
 		return _firmService.Post(t);
 	}
 
+	[HttpPut(nameof(Put))]
 	public ActionResult<ReactedResult<Firm>> Put(Firm t)
 	{
 		return _firmService.Put(t);
 	}
 
+	[HttpDelete(nameof(Delete))]
 	public ActionResult<ReactedResult<Firm>> Delete(Guid id)
 	{
 		return _firmService.Delete(id);

@@ -18,7 +18,7 @@ public class Contact : IContact
 	public required string Surname { get; set; }
 
 	[ForeignKey(nameof(IFirm))]
-	public Guid FirmId { get; set; }
+	public Guid? FirmId { get; set; }
 
 	public Firm? Firm { get; set; }
 

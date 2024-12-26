@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using pigeon_crud_service.Models.DBModels;
+using pigeon_crud_service.Services;
 using pigeon_lib.Interfaces.ControllerInterfaces;
 using pigeon_lib.Interfaces.ModelInterfaces;
 using pigeon_lib.Interfaces.ServiceInterfaces;
@@ -7,15 +8,17 @@ using pigeon_lib.Utils;
 
 namespace pigeon_crud_service.Controllers;
 
+[ApiController, Route($"api/v1/{nameof(Contact)}/[controller]/[action]")]
 public class ContactController : ControllerBase, IController<Contact>
 {
 	private readonly IService<Contact> _contactService;
 
-	public ContactController(IService<Contact> contactService)
+	public ContactController(ContactService contactService)
 	{
 		_contactService = contactService;
 	}
 
+	[HttpGet(nameof(Get))]
 	public ActionResult<Contact> Get(Guid id)
 	{
 		var contact = _contactService.Get(id);
@@ -26,6 +29,7 @@ public class ContactController : ControllerBase, IController<Contact>
 		return Ok(contact);
 	}
 
+	[HttpGet(nameof(GetList))]
 	public ActionResult<List<Contact>> GetList()
 	{
 		var contactList = _contactService.GetList();
@@ -38,22 +42,26 @@ public class ContactController : ControllerBase, IController<Contact>
 	/// </summary>
 	/// <param name="filterParams"></param>	
 	/// <returns></returns>
+	[HttpGet(nameof(Filter))]
 	public ActionResult<List<Contact>> Filter(IFilterParams filterParams)
 	{
 		var list = _contactService.Filter(filterParams);
 		return Ok(list);
 	}
 
+	[HttpPost(nameof(Post))]
 	public ActionResult<ReactedResult<Contact>> Post(Contact t)
 	{
 		return _contactService.Post(t);
 	}
 
+	[HttpPut(nameof(Put))]
 	public ActionResult<ReactedResult<Contact>> Put(Contact t)
 	{
 		return _contactService.Put(t);
 	}
 
+	[HttpDelete(nameof(Delete))]
 	public ActionResult<ReactedResult<Contact>> Delete(Guid id)
 	{
 		return _contactService.Delete(id);
