@@ -1,18 +1,79 @@
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore.Migrations;
+using pigeon_lib.Utils;
+using pigeon_report_service.Services;
+using pigeon_report_service.Models;
+using dotnet_third_party_integrations_core.kafka.models;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+	options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+	options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+	options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+}); ;
 
-builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddHttpClient();
+
+builder.Services.AddScoped<ReportService>();
+
+builder.Services.AddDbContext<PigeonReportDBContext>(options =>
+{
+	_ = options.UseNpgsql(builder.Configuration.GetConnectionString("Pigeon_v1"), x
+							 => x.MigrationsHistoryTable(HistoryRepository.DefaultTableName,
+							 builder.Configuration.GetConnectionString("Pigeon_v1_schema")));
+});
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+	c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+	{
+		Name = "Authorization",
+		In = ParameterLocation.Header,
+		Type = SecuritySchemeType.ApiKey,
+		Scheme = "Bearer"
+	});
+	c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+		{
+				{
+						new OpenApiSecurityScheme
+						{
+								Reference = new OpenApiReference
+								{
+										Type = ReferenceType.SecurityScheme,
+										Id = "Bearer"
+								},
+								Scheme = "oauth2",
+								Name = "Bearer",
+								In = ParameterLocation.Header,
+
+						},
+						new List<string>()
+				}
+		});
+});
+
+var appOptionsSection = builder.Configuration.GetSection("AppOptions");
+builder.Services.Configure<IAppOptions>(appOptionsSection);
+
+
+var kafkaOptionsSection = builder.Configuration.GetSection("KafkaOptions");
+builder.Services.Configure<IKafkaSettings>(kafkaOptionsSection);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+	app.MapOpenApi();
 }
+
+app.UseCors(x => x.SetIsOriginAllowed(t => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+
 
 app.UseHttpsRedirection();
 
