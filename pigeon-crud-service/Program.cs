@@ -5,9 +5,8 @@ using Microsoft.OpenApi.Models;
 using pigeon_crud_service.Models;
 using pigeon_crud_service.Services;
 using Microsoft.EntityFrameworkCore.Migrations;
-using pigeon_lib.Interfaces.ServiceInterfaces;
-using pigeon_crud_service.Models.DBModels;
 using pigeon_crud_service.Utils;
+using pigeon_lib.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,6 +63,9 @@ builder.Services.AddSwaggerGen(c =>
 var appOptionsSection = builder.Configuration.GetSection("AppOptions");
 builder.Services.Configure<IAppOptions>(appOptionsSection);
 
+var kafkaSettingsSection = builder.Configuration.GetSection("KafkaSettings");
+builder.Services.Configure<KafkaSettings>(kafkaSettingsSection);
+
 
 var app = builder.Build();
 
@@ -80,11 +82,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-using (var serviceScope = app.Services.CreateScope())
-{
-    var dbContext = serviceScope.ServiceProvider.GetRequiredService<PigeonDBContext>();
-    dbContext.Database.Migrate();
-}
 
 app.Run();
