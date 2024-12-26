@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace pigeon_lib.Models;
+namespace pigeon_lib.Utils;
 
 public class ReactedResult<T>
 {
