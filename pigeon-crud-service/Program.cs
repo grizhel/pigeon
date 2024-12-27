@@ -7,7 +7,6 @@ using pigeon_crud_service.Services;
 using Microsoft.EntityFrameworkCore.Migrations;
 using pigeon_lib.Utils;
 using dotnet_third_party_integrations_core.kafka.models;
-using pigeon_crud_service.Utils.Kafka;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +22,6 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<FirmService>();
 builder.Services.AddScoped<ContactService>();
 builder.Services.AddScoped<LocationService>();
-builder.Services.AddHostedService<KafkaConsumer>();
 
 builder.Services.AddDbContext<PigeonDBContext>(options =>
 {

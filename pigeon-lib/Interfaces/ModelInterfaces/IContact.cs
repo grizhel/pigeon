@@ -8,11 +8,11 @@ namespace pigeon_lib.Models.Interfaces.ModelInterfaces;
 
 public interface IContact
 {
-    Guid Id { get; set; }
+	Guid Id { get; set; }
 
-    string Name { get; set; }
+	string Name { get; set; }
 
-    string Surname { get; set; }
+	string Surname { get; set; }
 
-    Guid? FirmId { get; set; }
+	Guid? FirmId { get; set; }
 }

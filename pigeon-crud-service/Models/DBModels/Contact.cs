@@ -11,10 +11,10 @@ public class Contact : IContact
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public Guid Id { get; set; }
 
-	[Column(TypeName = "varchar(63)")]
+	[Column(TypeName = "varchar(64)")]
 	public required string Name { get; set; }
 
-	[Column(TypeName = "varchar(63)")]
+	[Column(TypeName = "varchar(64)")]
 	public required string Surname { get; set; }
 
 	[ForeignKey(nameof(IFirm))]

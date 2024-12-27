@@ -6,17 +6,17 @@ namespace pigeon_lib.Interfaces.ServiceInterfaces
 {
 	public interface IService<T>
 	{
-		T Get(Guid id);
+		Task<T> GetAsync(Guid id);
 
-		List<T> GetList();
+		Task<List<T>> GetListAsync();
 
-		List<T> Filter(IFilterParams filterParams);
+		Task<List<T>> FilterAsync(IFilterParams filterParams);
 
-		ReactedResult<T> Post(T t);
+		Task<ReactedResult<T>> PostAsync(T t);
 
-		ReactedResult<T> Put(T t);
-
-		ReactedResult<T> Delete(Guid id);
+		Task<ReactedResult<T>> PutAsync(T t);
+			
+		Task<ReactedResult<T>> DeleteAsync(Guid id);
 	}
 
 }

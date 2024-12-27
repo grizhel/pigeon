@@ -36,16 +36,16 @@ namespace pigeon_unit_test
 		/// 1st Requirement: Create contact (Rehberde kişi oluşturma).
 		/// </summary>
 		/// <param name="contact"></param>
-		public void CreateContact(Contact contact)
+		public async Task CreateContactAsync(Contact contact)
     {
-      contactService.Post(contact);
+      await contactService.PutAsync(contact);
 		}
 
 		/// <summary>
 		/// 2nd Requirement: Remove Contact (Rehberde kişi kaldırma).
 		/// </summary>
 		/// <param name="contactId"></param>
-		public void DeleteContact(Guid contactId)
+		public void DeleteContacttAsync(Guid contactId)
 		{
 
 		}
@@ -55,15 +55,15 @@ namespace pigeon_unit_test
 		/// 4th Requirement: Remove information from a spesific contact (Rehberdeki kişiden iletişim bilgisi kaldırma).
 		/// </summary>
 		/// <param name="contact"></param>
-		public void UpdateContact(Contact contact) 
+		public async Task UpdateContactAsync(Contact contact) 
     {
-      contactService.Put(contact);
+      await contactService.PutAsync(contact);
     }
 
 		/// <summary>
 		/// 5th Requirement: List contacts (Rehberdeki kişilerin listelenmesi).
 		/// </summary>
-		public void GetContactList()
+		public async Task GetContactListtAsync()
 		{
 
 		}
@@ -73,7 +73,7 @@ namespace pigeon_unit_test
 		/// (Rehberdeki bir kişiyle ilgili iletişim bilgilerinin de yer aldığı detay bilgilerin getirilmesi).
 		/// </summary>
 		/// <param name="contactId"></param>
-		public void GetContactDetails(Guid contactId)
+		public async Task GetContactDetailstAsync(Guid contactId)
 		{
 
 		}
@@ -82,26 +82,26 @@ namespace pigeon_unit_test
 		/// 7th Requirement: Get location based statistics of the contacts
 		/// (Rehberdeki kişilerin bulundukları konuma göre istatistiklerini çıkartan bir rapor talebi).
 		/// </summary>
-		public void GetSystematicLocationalReport() 
+		public async Task GetSystematicLocationalReporttAsync() 
 		{
-			Report systematicLocationalReport = reportService.GetSystematicLocationalReport();
+			Report systematicLocationalReport = await reportService.GetSystematicLocationalReportAsync();
 		}
 
 		/// <summary>
 		/// 8th Requirement: Listing reports (Sistemin oluşturduğu raporların listelenmesi).
 		/// </summary>
-		public void ListReports()
+		public async Task ListReportstAsync()
 		{
-			List<Report> systematicLocationalReport = reportService.GetList();
+			List<Report> systematicLocationalReport = await reportService.GetListAsync();
 		}
 
 		/// <summary>
 		/// 9th Requirement: Get detailed report (Sistemin oluşturduğu bir raporun detay bilgilerinin getirilmesi).
 		/// </summary>
 		/// <param name="reportId"></param>
-		public void GetDetailedReport(Guid reportId)
+		public async Task GetDetailedReport(Guid reportId)
 		{
-			Report systematicLocationalReport = reportService.GetDetailedReport(reportId);
+			Report systematicLocationalReport = await reportService.GetDetailedReportAsync(reportId);
 		}
 	}
 }

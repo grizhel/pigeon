@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using pigeon_crud_service.Models;
 using pigeon_crud_service.Models.DBModels;
@@ -23,32 +24,31 @@ namespace pigeon_crud_service.Services
 			this.dbContext = dbContext;
 		}
 
-		public Location? Get(Guid id)
+		public async Task<Location?> GetAsync(Guid id)
 		{
-			// FirstOrDefault is used for time efficiency.
-			return dbContext.Locations.FirstOrDefault(q => q.Id == id);
+			return await dbContext.Locations.FirstOrDefaultAsync(q => q.Id == id);
 		}
 
-		public List<Location> GetList()
+		public async Task<List<Location>> GetListAsync()
 		{
-			return [.. dbContext.Locations.Take(_limitList)];
+			return [.. await dbContext.Locations.Take(_limitList).ToListAsync()];
 		}
 
-		public List<Location> Filter(IFilterParams filterParams)
+		public async Task<List<Location>> FilterAsync(IFilterParams filterParams)
 		{
 			throw new NotImplementedException(@"
 								Locations are not filtered. This method is implemented for more complex filtering which is unnecesary at the moment
 								");
 		}
 
-		public ReactedResult<Location> Post(Location location)
+		public async Task<ReactedResult<Location>> PostAsync(Location location)
 		{
-			dbContext.Locations.Add(location);
-			dbContext.SaveChanges();
+			await dbContext.Locations.AddAsync(location);
+			await dbContext.SaveChangesAsync();
 			return ReactedResult<Location>.Successful(location);
 		}
 
-		public ReactedResult<Location> Put(Location location)
+		public async Task<ReactedResult<Location>> PutAsync(Location location)
 		{
 			var locationEntity = dbContext.Locations.FirstOrDefault(q => q.Id == location.Id);
 			dbContext.Locations.Update(location);
@@ -56,15 +56,15 @@ namespace pigeon_crud_service.Services
 			return ReactedResult<Location>.Successful(location);
 		}
 
-		public ReactedResult<Location> Delete(Guid id)
+		public async Task<ReactedResult<Location>> DeleteAsync(Guid id)
 		{
-			var locationEntity = dbContext.Locations.FirstOrDefault(q => q.Id == id);
+			var locationEntity = await dbContext.Locations.FirstOrDefaultAsync(q => q.Id == id);
 			if (locationEntity == null)
 			{
 				return ReactedResult<Location>.Failed(HttpStatusCode.NotFound, $"There is not any Location with Id of {id}");
 			}
 			dbContext.Locations.Remove(locationEntity);
-			dbContext.SaveChanges();
+			dbContext.SaveChangesAsync();
 			return ReactedResult<Location>.Successful(locationEntity);
 		}
 	}

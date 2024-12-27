@@ -4,6 +4,7 @@ using System.Net;
 using dotnet_third_party_integrations_core.kafka.models;
 using dotnet_third_party_integrations_core.Kafka;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using pigeon_crud_service.Models;
 using pigeon_crud_service.Models.DBModels;
@@ -27,17 +28,17 @@ namespace pigeon_crud_service.Services
 			this.kafkaOptions = kafkaOptions.Value;
 		}
 
-		public Contact? Get(Guid id)
+		public async Task<Contact?> GetAsync(Guid id)
 		{
-			return dbContext.Contacts.FirstOrDefault(q => q.Id == id);
+			return await dbContext.Contacts.FirstOrDefaultAsync(q => q.Id == id);
 		}
 
-		public List<Contact> GetList()
+		public async Task<List<Contact>> GetListAsync()
 		{
-			return [.. dbContext.Contacts.Take(_limitList)];
+			return [.. await dbContext.Contacts.Take(_limitList).ToListAsync()];
 		}
 
-		public List<Contact> Filter(IFilterParams filterParams)
+		public async Task<List<Contact>> FilterAsync(IFilterParams filterParams)
 		{
 			var firmIdStr = filterParams.Params.GetValueOrDefault("firmId");
 			
@@ -71,36 +72,36 @@ namespace pigeon_crud_service.Services
 				}
 			}
 
-			return [.. queryBuilder.Take(_limitList)];
+			return [.. await queryBuilder.Take(_limitList).ToListAsync()];
 		}
 
-		public ReactedResult<Contact> Post(Contact contact)
+		public async Task<ReactedResult<Contact>> PostAsync(Contact contact)
 		{
-			dbContext.Contacts.Add(contact);
-			dbContext.SaveChanges();
-			Hermes.SendMessageAsync(kafkaOptions,KafkaTopics.ContactIsCreated.ToString(), contact);
+			await dbContext.Contacts.AddAsync(contact);
+			await dbContext.SaveChangesAsync();
+			_ = Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsCreated.ToString(), contact);
 			return ReactedResult<Contact>.Successful(contact);
 		}
 
-		public ReactedResult<Contact> Put(Contact contact)
+		public async Task<ReactedResult<Contact>> PutAsync(Contact contact)
 		{
-			var contactEntity =  dbContext.Contacts.FirstOrDefault(q => q.Id == contact.Id);
+			var contactEntity = await dbContext.Contacts.FirstOrDefaultAsync(q => q.Id == contact.Id);
 			dbContext.Contacts.Update(contact);
-			dbContext.SaveChanges();
-			Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsUpdated.ToString(), contact);
+			await dbContext.SaveChangesAsync();
+			_ = Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsUpdated.ToString(), contact);
 			return ReactedResult<Contact>.Successful(contact);
 		}
 
-		public ReactedResult<Contact> Delete(Guid id)
+		public async Task<ReactedResult<Contact>> DeleteAsync(Guid id)
 		{
-			var contact = dbContext.Contacts.FirstOrDefault(q => q.Id == id);
+			var contact = await dbContext.Contacts.FirstOrDefaultAsync(q => q.Id == id);
 			if(contact == null)
 			{
 				return ReactedResult<Contact>.Failed(HttpStatusCode.NotFound, $"There is not any Contact with Id of {id}");
 			}
 			dbContext.Contacts.Remove(contact);
-			dbContext.SaveChanges();
-			Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsRemoved.ToString(), contact);
+			await dbContext.SaveChangesAsync();
+			_ = Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsRemoved.ToString(), contact);
 			return ReactedResult<Contact>.Successful(contact);
 		}
 	}

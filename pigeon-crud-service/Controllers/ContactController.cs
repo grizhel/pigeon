@@ -18,10 +18,10 @@ public class ContactController : ControllerBase, IController<Contact>
 		this.contactService = contactService;
 	}
 
-	[HttpGet(nameof(Get))]
-	public ActionResult<Contact> Get(Guid id)
+	[HttpGet]
+	public async Task<ActionResult<Contact>> GetAsync(Guid id)
 	{
-		var contact = contactService.Get(id);
+		var contact = contactService.GetAsync(id);
 		if (contact == null) 
 		{
 			return NotFound();
@@ -29,10 +29,10 @@ public class ContactController : ControllerBase, IController<Contact>
 		return Ok(contact);
 	}
 
-	[HttpGet(nameof(GetList))]
-	public ActionResult<List<Contact>> GetList()
+	[HttpGet]
+	public async Task<ActionResult<List<Contact>>> GetListAsync()
 	{
-		var contactList = contactService.GetList();
+		var contactList = contactService.GetListAsync();
 		return Ok(contactList);
 	}
 
@@ -42,28 +42,28 @@ public class ContactController : ControllerBase, IController<Contact>
 	/// </summary>
 	/// <param name="filterParams"></param>	
 	/// <returns></returns>
-	[HttpGet(nameof(Filter))]
-	public ActionResult<List<Contact>> Filter(IFilterParams filterParams)
+	[HttpGet]
+	public async Task<ActionResult<List<Contact>>> FilterAsync(IFilterParams filterParams)
 	{
-		var list = contactService.Filter(filterParams);
+		var list = await contactService.FilterAsync(filterParams);
 		return Ok(list);
 	}
 
-	[HttpPost(nameof(Post))]
-	public ActionResult<ReactedResult<Contact>> Post(Contact t)
+	[HttpPost]
+	public async Task<ActionResult<ReactedResult<Contact>>> PostAsync(Contact t)
 	{
-		return contactService.Post(t);
+		return await contactService.PostAsync(t);
 	}
 
-	[HttpPut(nameof(Put))]
-	public ActionResult<ReactedResult<Contact>> Put(Contact t)
+	[HttpPut]
+	public async Task<ActionResult<ReactedResult<Contact>>> PutAsync(Contact t)
 	{
-		return contactService.Put(t);
+		return await contactService.PutAsync(t);
 	}
 
-	[HttpDelete(nameof(Delete))]
-	public ActionResult<ReactedResult<Contact>> Delete(Guid id)
+	[HttpDelete]
+	public async Task<ActionResult<ReactedResult<Contact>>> DeleteAsync(Guid id)
 	{
-		return contactService.Delete(id);
+		return await contactService.DeleteAsync(id);
 	}
 }

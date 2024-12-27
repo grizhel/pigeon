@@ -6,16 +6,16 @@ namespace pigeon_lib.Interfaces.ControllerInterfaces
 {
     public interface IController<T> 
     {
-        ActionResult<T> Get(Guid id);
+        Task<ActionResult<T>> GetAsync(Guid id);
 
-        ActionResult<List<T>> GetList();
+        Task<ActionResult<List<T>>> GetListAsync();
 
-        ActionResult<List<T>> Filter(IFilterParams filterParams);
+        Task<ActionResult<List<T>>> FilterAsync(IFilterParams filterParams);
 
-        ActionResult<ReactedResult<T>> Post(T t);
+        Task<ActionResult<ReactedResult<T>>> PostAsync(T t);
 
-        ActionResult<ReactedResult<T>> Put(T t);
+        Task<ActionResult<ReactedResult<T>>> PutAsync(T t);
 
-        ActionResult<ReactedResult<T>> Delete(Guid id);
+        Task<ActionResult<ReactedResult<T>>> DeleteAsync(Guid id);
     }
 }

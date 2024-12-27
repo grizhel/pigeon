@@ -11,7 +11,7 @@ public class Firm : IFirm
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid Id { get; set; }
 
-    [Column(TypeName = "varchar(100)")]
+    [Column(TypeName = "varchar(128)")]
     public required string Name { get; set; }
 
     public Guid LocationId { get; set; }

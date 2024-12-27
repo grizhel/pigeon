@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using pigeon_crud_service.Models;
 using pigeon_crud_service.Models.DBModels;
@@ -23,18 +24,17 @@ namespace pigeon_crud_service.Services
 			this.dbContext = dbContext;
 		}
 
-		public Firm? Get(Guid id)
+		public async Task<Firm?> GetAsync(Guid id)
 		{
-			// FirstOrDefault is used for time efficiency.
-			return dbContext.Firms.FirstOrDefault(q => q.Id == id);
+			return await dbContext.Firms.FirstOrDefaultAsync(q => q.Id == id);
 		}
 
-		public List<Firm> GetList()
+		public async Task<List<Firm>> GetListAsync()
 		{
-			return [.. dbContext.Firms.Take(_limitList)];
+			return [.. await dbContext.Firms.Take(_limitList).ToListAsync()];
 		}
 
-		public List<Firm> Filter(IFilterParams filterParams)
+		public async Task<List<Firm>> FilterAsync(IFilterParams filterParams)
 		{
 			var locationIdStr = filterParams.Params.GetValueOrDefault("locationId");
 
@@ -51,34 +51,34 @@ namespace pigeon_crud_service.Services
 				}
 			}
 
-			return [.. queryBuilder.Take(_limitList)];
+			return [.. await queryBuilder.Take(_limitList).ToListAsync()];
 		}
 
-		public ReactedResult<Firm> Post(Firm firm)
+		public async Task<ReactedResult<Firm>> PostAsync(Firm firm)
 		{
-			dbContext.Firms.Add(firm);
-			dbContext.SaveChanges();
+			await dbContext.Firms.AddAsync(firm);
+			await dbContext.SaveChangesAsync();
 			return ReactedResult<Firm>.Successful(firm);
 		}
 
-		public ReactedResult<Firm> Put(Firm firm)
+		public async Task<ReactedResult<Firm>> PutAsync(Firm firm)
 		{
-			var firmEntity = dbContext.Firms.FirstOrDefault(q => q.Id == firm.Id);
+			var firmEntity = await dbContext.Firms.FirstOrDefaultAsync(q => q.Id == firm.Id);
 			dbContext.Firms.Update(firm);
-			dbContext.SaveChanges();
+			await dbContext.SaveChangesAsync();
 			return ReactedResult<Firm>.Successful(firm);
 		}
 
-		public ReactedResult<Firm> Delete(Guid id)
+		public async Task<ReactedResult<Firm>> DeleteAsync(Guid id)
 		{
-			var firmEntity = dbContext.Firms.FirstOrDefault(q => q.Id == id);
-			if (firmEntity == null)
+			var firm = await dbContext.Firms.FirstOrDefaultAsync(q => q.Id == id);
+			if (firm == null)
 			{
 				return ReactedResult<Firm>.Failed(HttpStatusCode.NotFound, $"There is not any Firm with Id of {id}");
 			}
-			dbContext.Firms.Remove(firmEntity);
-			dbContext.SaveChanges();
-			return ReactedResult<Firm>.Successful(firmEntity);
+			dbContext.Firms.Remove(firm);
+			await dbContext.SaveChangesAsync();
+			return ReactedResult<Firm>.Successful(firm);
 		}
 	}
 }

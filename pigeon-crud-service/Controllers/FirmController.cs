@@ -8,7 +8,7 @@ using pigeon_lib.Utils;
 
 namespace pigeon_crud_service.Controllers;
 
-[ApiController, Route($"api/v1/pigeon-crud/[controller]/[action]")]
+[ApiController, Route($"api/v1/pigeon-crud/[controller]/")]
 public class FirmController : ControllerBase, IController<Firm>
 {
 	private readonly IService<Firm> firmService;
@@ -18,10 +18,10 @@ public class FirmController : ControllerBase, IController<Firm>
 		this.firmService = firmService;
 	}
 
-	[HttpGet(nameof(Get))]
-	public ActionResult<Firm> Get(Guid id)
+	[HttpGet]
+	public async Task<ActionResult<Firm>> GetAsync(Guid id)
 	{
-		var firm = firmService.Get(id);
+		var firm = await firmService.GetAsync(id);
 		if (firm == null)
 		{
 			return NotFound();
@@ -29,10 +29,10 @@ public class FirmController : ControllerBase, IController<Firm>
 		return Ok(firm);
 	}
 
-	[HttpGet(nameof(GetList))]
-	public ActionResult<List<Firm>> GetList()
+	[HttpGet]
+	public async Task<ActionResult<List<Firm>>> GetListAsync()
 	{
-		var firmList = firmService.GetList();
+		var firmList = await firmService.GetListAsync();
 		return Ok(firmList);
 	}
 
@@ -42,28 +42,28 @@ public class FirmController : ControllerBase, IController<Firm>
 	/// </summary>
 	/// <param name="filterParams"></param>	
 	/// <returns></returns>
-	[HttpGet(nameof(Filter))]
-	public ActionResult<List<Firm>> Filter(IFilterParams filterParams)
+	[HttpGet]
+	public async Task<ActionResult<List<Firm>>> FilterAsync(IFilterParams filterParams)
 	{
-		var list = firmService.Filter(filterParams);
+		var list = await firmService.FilterAsync(filterParams);
 		return Ok(list);
 	}
 
-	[HttpPost(nameof(Post))]
-	public ActionResult<ReactedResult<Firm>> Post(Firm t)
+	[HttpPost]
+	public async Task<ActionResult<ReactedResult<Firm>>> PostAsync(Firm t)
 	{
-		return firmService.Post(t);
+		return await firmService.PostAsync(t);
 	}
 
-	[HttpPut(nameof(Put))]
-	public ActionResult<ReactedResult<Firm>> Put(Firm t)
+	[HttpPut]
+	public async Task<ActionResult<ReactedResult<Firm>>> PutAsync(Firm t)
 	{
-		return firmService.Put(t);
+		return await firmService.PutAsync(t);
 	}
 
-	[HttpDelete(nameof(Delete))]
-	public ActionResult<ReactedResult<Firm>> Delete(Guid id)
+	[HttpDelete]
+	public async Task<ActionResult<ReactedResult<Firm>>> DeleteAsync(Guid id)
 	{
-		return firmService.Delete(id);
+		return await firmService.DeleteAsync(id);
 	}
 }

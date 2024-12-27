@@ -1,4 +1,6 @@
-﻿namespace pigeon_lib.Models.Interfaces.ModelInterfaces;
+﻿using pigeon_lib.Enums;
+
+namespace pigeon_lib.Models.Interfaces.ModelInterfaces;
 
 public interface ILocation
 {
@@ -9,4 +11,6 @@ public interface ILocation
 	string NVIAddress { get; set; }
 
 	string Address { get; set; }
+
+	LocationType LocationType { get; set; }
 }

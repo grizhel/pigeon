@@ -29,14 +29,14 @@ namespace pigeon_unit_test
 
 
 		[Fact]
-		public void GetTest()
+		public async Task GetTest()
 		{
 			var datum = data.contacts.First();
-			Assert.True(contactService.Get(datum.Id) != null);
-			Assert.Equals(contactService.Get(datum.Id), datum);
+			Assert.True((await contactService.GetAsync(datum.Id)) != null);
+			Assert.Equals(await contactService.GetAsync(datum.Id), datum);
 
 			var failWithId = Guid.NewGuid();
-			Assert.True(contactService.Get(failWithId) == null);
+			Assert.True(await contactService.GetAsync(failWithId) == null);
 		}
 	}
 }

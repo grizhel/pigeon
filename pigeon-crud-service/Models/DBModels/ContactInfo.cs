@@ -17,7 +17,7 @@ public class ContactInfo : IContactInfo
 
 	public required ContactTypes ContactType { get; set; }
 
-	public Contact? Contact { get; set; }
-
 	public required string Info { get; set; }
+
+	public Contact? Contact { get; set; }
 }

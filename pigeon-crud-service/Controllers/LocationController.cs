@@ -8,7 +8,7 @@ using pigeon_lib.Utils;
 
 namespace pigeon_crud_service.Controllers;
 
-[ApiController, Route($"api/v1/pigeon-crud/[controller]/[action]")]
+[ApiController, Route($"api/v1/pigeon-crud/[controller]/")]
 public class LocationController : ControllerBase, IController<Location>
 {
 	private readonly IService<Location> locationService;
@@ -18,10 +18,10 @@ public class LocationController : ControllerBase, IController<Location>
 		this.locationService = locationService;
 	}
 
-	[HttpGet(nameof(Get))]
-	public ActionResult<Location> Get(Guid id)
+	[HttpGet]
+	public async Task<ActionResult<Location>> GetAsync(Guid id)
 	{
-		var location = locationService.Get(id);
+		var location = await locationService.GetAsync(id);
 		if (location == null)
 		{
 			return NotFound();
@@ -29,10 +29,10 @@ public class LocationController : ControllerBase, IController<Location>
 		return Ok(location);
 	}
 
-	[HttpGet(nameof(GetList))]
-	public ActionResult<List<Location>> GetList()
+	[HttpGet]
+	public async Task<ActionResult<List<Location>>> GetListAsync()
 	{
-		var locationList = locationService.GetList();
+		var locationList = await locationService.GetListAsync();
 		return Ok(locationList);
 	}
 
@@ -42,28 +42,28 @@ public class LocationController : ControllerBase, IController<Location>
 	/// </summary>
 	/// <param name="filterParams"></param>	
 	/// <returns></returns>
-	[HttpGet(nameof(Filter))]
-	public ActionResult<List<Location>> Filter(IFilterParams filterParams)
+	[HttpGet]
+	public async Task<ActionResult<List<Location>>> FilterAsync(IFilterParams filterParams)
 	{
-		var list = locationService.Filter(filterParams);
+		var list = await locationService.FilterAsync(filterParams);
 		return Ok(list);
 	}
 
-	[HttpPost(nameof(Post))]
-	public ActionResult<ReactedResult<Location>> Post(Location t)
+	[HttpPost]
+	public async Task<ActionResult<ReactedResult<Location>>> PostAsync(Location t)
 	{
-		return locationService.Post(t);
+		return await locationService.PostAsync(t);
 	}
 
-	[HttpPut(nameof(Put))]
-	public ActionResult<ReactedResult<Location>> Put(Location t)
+	[HttpPut]
+	public async Task<ActionResult<ReactedResult<Location>>> PutAsync(Location t)
 	{
-		return locationService.Put(t);
+		return await locationService.PutAsync(t);
 	}
 
-	[HttpDelete(nameof(Delete))]
-	public ActionResult<ReactedResult<Location>> Delete(Guid id)
+	[HttpDelete]
+	public async Task<ActionResult<ReactedResult<Location>>> DeleteAsync(Guid id)
 	{
-		return locationService.Delete(id);
+		return await locationService.DeleteAsync(id);
 	}
 }
