@@ -11,13 +11,13 @@ public class ReactedResult<T>
 {
     public bool Success { get; set; }
 
-    public string Message { get; set; } = null;
+    public string? Message { get; set; } = null;
 
-    public T Model { get; set; } = default(T);
+    public T? Model { get; set; } = default;
 
     public HttpStatusCode StatusCode { get; set; }
 
-    public static ReactedResult<T> Successful(T data = default, string message = "")
+    public static ReactedResult<T> Successful(T? data = default, string message = "")
     {
         return new ReactedResult<T>
         {

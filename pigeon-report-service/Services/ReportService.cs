@@ -8,11 +8,11 @@ namespace pigeon_report_service.Services
 {
 	public class ReportService : ServiceBase
 	{
-		private readonly PigeonReportDBContext _pigeonReportDBContext;
+		private readonly PigeonReportDBContext dBContext;
 
 		public ReportService(PigeonReportDBContext dbContext, IOptions<AppOptions> appOptions) : base(appOptions)
 		{
-			_pigeonReportDBContext = dbContext;
+			dBContext = dbContext;
 		}
 
 		public Report GetDetailedReport(Guid reportId)
@@ -22,7 +22,7 @@ namespace pigeon_report_service.Services
 
 		public List<Report> GetList()
 		{
-			return [.. _pigeonReportDBContext.Reports.Take(_limitList)];
+			return [.. dBContext.Reports.Take(_limitList)];
 		}
 
 		public Report GetSystematicLocationalReport()

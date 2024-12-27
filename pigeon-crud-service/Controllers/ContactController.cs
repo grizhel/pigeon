@@ -8,20 +8,20 @@ using pigeon_lib.Utils;
 
 namespace pigeon_crud_service.Controllers;
 
-[ApiController, Route($"api/v1/{nameof(Contact)}/[controller]/[action]")]
+[ApiController, Route($"api/v1/pigeon-crud/[controller]/[action]")]
 public class ContactController : ControllerBase, IController<Contact>
 {
-	private readonly IService<Contact> _contactService;
+	private readonly IService<Contact> contactService;
 
 	public ContactController(ContactService contactService)
 	{
-		_contactService = contactService;
+		this.contactService = contactService;
 	}
 
 	[HttpGet(nameof(Get))]
 	public ActionResult<Contact> Get(Guid id)
 	{
-		var contact = _contactService.Get(id);
+		var contact = contactService.Get(id);
 		if (contact == null) 
 		{
 			return NotFound();
@@ -32,7 +32,7 @@ public class ContactController : ControllerBase, IController<Contact>
 	[HttpGet(nameof(GetList))]
 	public ActionResult<List<Contact>> GetList()
 	{
-		var contactList = _contactService.GetList();
+		var contactList = contactService.GetList();
 		return Ok(contactList);
 	}
 
@@ -45,25 +45,25 @@ public class ContactController : ControllerBase, IController<Contact>
 	[HttpGet(nameof(Filter))]
 	public ActionResult<List<Contact>> Filter(IFilterParams filterParams)
 	{
-		var list = _contactService.Filter(filterParams);
+		var list = contactService.Filter(filterParams);
 		return Ok(list);
 	}
 
 	[HttpPost(nameof(Post))]
 	public ActionResult<ReactedResult<Contact>> Post(Contact t)
 	{
-		return _contactService.Post(t);
+		return contactService.Post(t);
 	}
 
 	[HttpPut(nameof(Put))]
 	public ActionResult<ReactedResult<Contact>> Put(Contact t)
 	{
-		return _contactService.Put(t);
+		return contactService.Put(t);
 	}
 
 	[HttpDelete(nameof(Delete))]
 	public ActionResult<ReactedResult<Contact>> Delete(Guid id)
 	{
-		return _contactService.Delete(id);
+		return contactService.Delete(id);
 	}
 }

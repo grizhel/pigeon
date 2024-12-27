@@ -16,22 +16,22 @@ namespace pigeon_crud_service.Services
 {
 	public class LocationService : ServiceBase, IService<Location>
 	{
-		private readonly PigeonDBContext _dbContext;
+		private readonly PigeonDBContext dbContext;
 
 		public LocationService(PigeonDBContext dbContext, IOptions<AppOptions> appOptions) : base(appOptions)
 		{
-			_dbContext = dbContext;
+			this.dbContext = dbContext;
 		}
 
 		public Location? Get(Guid id)
 		{
 			// FirstOrDefault is used for time efficiency.
-			return _dbContext.Locations.FirstOrDefault(q => q.Id == id);
+			return dbContext.Locations.FirstOrDefault(q => q.Id == id);
 		}
 
 		public List<Location> GetList()
 		{
-			return [.. _dbContext.Locations.Take(_limitList)];
+			return [.. dbContext.Locations.Take(_limitList)];
 		}
 
 		public List<Location> Filter(IFilterParams filterParams)
@@ -43,28 +43,28 @@ namespace pigeon_crud_service.Services
 
 		public ReactedResult<Location> Post(Location location)
 		{
-			_dbContext.Locations.Add(location);
-			_dbContext.SaveChanges();
+			dbContext.Locations.Add(location);
+			dbContext.SaveChanges();
 			return ReactedResult<Location>.Successful(location);
 		}
 
 		public ReactedResult<Location> Put(Location location)
 		{
-			var locationEntity = _dbContext.Locations.FirstOrDefault(q => q.Id == location.Id);
-			_dbContext.Locations.Update(location);
-			_dbContext.SaveChanges();
+			var locationEntity = dbContext.Locations.FirstOrDefault(q => q.Id == location.Id);
+			dbContext.Locations.Update(location);
+			dbContext.SaveChanges();
 			return ReactedResult<Location>.Successful(location);
 		}
 
 		public ReactedResult<Location> Delete(Guid id)
 		{
-			var locationEntity = _dbContext.Locations.FirstOrDefault(q => q.Id == id);
+			var locationEntity = dbContext.Locations.FirstOrDefault(q => q.Id == id);
 			if (locationEntity == null)
 			{
 				return ReactedResult<Location>.Failed(HttpStatusCode.NotFound, $"There is not any Location with Id of {id}");
 			}
-			_dbContext.Locations.Remove(locationEntity);
-			_dbContext.SaveChanges();
+			dbContext.Locations.Remove(locationEntity);
+			dbContext.SaveChanges();
 			return ReactedResult<Location>.Successful(locationEntity);
 		}
 	}

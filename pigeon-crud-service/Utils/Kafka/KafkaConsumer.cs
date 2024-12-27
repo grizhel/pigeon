@@ -13,7 +13,6 @@ namespace pigeon_crud_service.Utils.Kafka
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 		{
 			using var scope = serviceScopeFactory.CreateScope();
-			var kafkaService = scope.ServiceProvider.GetRequiredService<KafkaService>();
 			var kafkaOptions = scope.ServiceProvider.GetRequiredService<IOptions<KafkaOptions>>().Value;
 			try
 			{

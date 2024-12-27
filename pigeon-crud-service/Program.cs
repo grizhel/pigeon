@@ -23,7 +23,6 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<FirmService>();
 builder.Services.AddScoped<ContactService>();
 builder.Services.AddScoped<LocationService>();
-builder.Services.AddScoped<KafkaService>();
 builder.Services.AddHostedService<KafkaConsumer>();
 
 builder.Services.AddDbContext<PigeonDBContext>(options =>

@@ -1,6 +1,8 @@
 ﻿using System.Dynamic;
 using System.Linq;
 using System.Net;
+using dotnet_third_party_integrations_core.kafka.models;
+using dotnet_third_party_integrations_core.Kafka;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Options;
 using pigeon_crud_service.Models;
@@ -16,30 +18,30 @@ namespace pigeon_crud_service.Services
 {
 	public class ContactService : ServiceBase, IService<Contact>
 	{
-		private readonly PigeonDBContext _dbContext;
-		private readonly KafkaService _kafkaService;
+		private readonly PigeonDBContext dbContext;
+		private readonly KafkaOptions kafkaOptions;
 
-		public ContactService(PigeonDBContext dbContext, IOptions<AppOptions> appOptions, KafkaService kafkaService) : base(appOptions)
+		public ContactService(PigeonDBContext dbContext, IOptions<AppOptions> appOptions, IOptions<KafkaOptions> kafkaOptions) : base(appOptions)
 		{
-			_dbContext = dbContext;
-			_kafkaService = kafkaService;
+			this.dbContext = dbContext;
+			this.kafkaOptions = kafkaOptions.Value;
 		}
 
 		public Contact? Get(Guid id)
 		{
-			return _dbContext.Contacts.FirstOrDefault(q => q.Id == id);
+			return dbContext.Contacts.FirstOrDefault(q => q.Id == id);
 		}
 
 		public List<Contact> GetList()
 		{
-			return [.. _dbContext.Contacts.Take(_limitList)];
+			return [.. dbContext.Contacts.Take(_limitList)];
 		}
 
 		public List<Contact> Filter(IFilterParams filterParams)
 		{
 			var firmIdStr = filterParams.Params.GetValueOrDefault("firmId");
 			
-			var queryBuilder = _dbContext.Contacts.AsQueryable();
+			var queryBuilder = dbContext.Contacts.AsQueryable();
 			if (firmIdStr != null) 
 			{
 				if (Guid.TryParse(firmIdStr, out var firmId))
@@ -74,31 +76,32 @@ namespace pigeon_crud_service.Services
 
 		public ReactedResult<Contact> Post(Contact contact)
 		{
-			_dbContext.Contacts.Add(contact);
-			_dbContext.SaveChanges();
-			_kafkaService.SendMessage(KafkaTopics.ContactIsCreated.ToString(), contact);
+			dbContext.Contacts.Add(contact);
+			dbContext.SaveChanges();
+			Hermes.SendMessageAsync(kafkaOptions,KafkaTopics.ContactIsCreated.ToString(), contact);
 			return ReactedResult<Contact>.Successful(contact);
 		}
 
 		public ReactedResult<Contact> Put(Contact contact)
 		{
-			var contactEntity =  _dbContext.Contacts.FirstOrDefault(q => q.Id == contact.Id);
-			_dbContext.Contacts.Update(contact);
-			_dbContext.SaveChanges();
-			_kafkaService.SendMessage(KafkaTopics.ContactIsUpdated.ToString(), contact);
+			var contactEntity =  dbContext.Contacts.FirstOrDefault(q => q.Id == contact.Id);
+			dbContext.Contacts.Update(contact);
+			dbContext.SaveChanges();
+			Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsUpdated.ToString(), contact);
 			return ReactedResult<Contact>.Successful(contact);
 		}
 
 		public ReactedResult<Contact> Delete(Guid id)
 		{
-			var contactEntity = _dbContext.Contacts.FirstOrDefault(q => q.Id == id);
-			if(contactEntity == null)
+			var contact = dbContext.Contacts.FirstOrDefault(q => q.Id == id);
+			if(contact == null)
 			{
 				return ReactedResult<Contact>.Failed(HttpStatusCode.NotFound, $"There is not any Contact with Id of {id}");
 			}
-			_dbContext.Contacts.Remove(contactEntity);
-			_dbContext.SaveChanges();
-			return ReactedResult<Contact>.Successful(contactEntity);
+			dbContext.Contacts.Remove(contact);
+			dbContext.SaveChanges();
+			Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsRemoved.ToString(), contact);
+			return ReactedResult<Contact>.Successful(contact);
 		}
 	}
 }

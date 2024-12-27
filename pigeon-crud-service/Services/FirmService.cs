@@ -16,29 +16,29 @@ namespace pigeon_crud_service.Services
 {
 	public class FirmService : ServiceBase, IService<Firm>
 	{
-		private readonly PigeonDBContext _dbContext;
+		private readonly PigeonDBContext dbContext;
 
 		public FirmService(PigeonDBContext dbContext, IOptions<AppOptions> appOptions) : base(appOptions)
 		{
-			_dbContext = dbContext;
+			this.dbContext = dbContext;
 		}
 
 		public Firm? Get(Guid id)
 		{
 			// FirstOrDefault is used for time efficiency.
-			return _dbContext.Firms.FirstOrDefault(q => q.Id == id);
+			return dbContext.Firms.FirstOrDefault(q => q.Id == id);
 		}
 
 		public List<Firm> GetList()
 		{
-			return [.. _dbContext.Firms.Take(_limitList)];
+			return [.. dbContext.Firms.Take(_limitList)];
 		}
 
 		public List<Firm> Filter(IFilterParams filterParams)
 		{
 			var locationIdStr = filterParams.Params.GetValueOrDefault("locationId");
 
-			var queryBuilder = _dbContext.Firms.AsQueryable();
+			var queryBuilder = dbContext.Firms.AsQueryable();
 			if (locationIdStr != null)
 			{
 				if (Guid.TryParse(locationIdStr, out var locationId))
@@ -56,28 +56,28 @@ namespace pigeon_crud_service.Services
 
 		public ReactedResult<Firm> Post(Firm firm)
 		{
-			_dbContext.Firms.Add(firm);
-			_dbContext.SaveChanges();
+			dbContext.Firms.Add(firm);
+			dbContext.SaveChanges();
 			return ReactedResult<Firm>.Successful(firm);
 		}
 
 		public ReactedResult<Firm> Put(Firm firm)
 		{
-			var firmEntity = _dbContext.Firms.FirstOrDefault(q => q.Id == firm.Id);
-			_dbContext.Firms.Update(firm);
-			_dbContext.SaveChanges();
+			var firmEntity = dbContext.Firms.FirstOrDefault(q => q.Id == firm.Id);
+			dbContext.Firms.Update(firm);
+			dbContext.SaveChanges();
 			return ReactedResult<Firm>.Successful(firm);
 		}
 
 		public ReactedResult<Firm> Delete(Guid id)
 		{
-			var firmEntity = _dbContext.Firms.FirstOrDefault(q => q.Id == id);
+			var firmEntity = dbContext.Firms.FirstOrDefault(q => q.Id == id);
 			if (firmEntity == null)
 			{
 				return ReactedResult<Firm>.Failed(HttpStatusCode.NotFound, $"There is not any Firm with Id of {id}");
 			}
-			_dbContext.Firms.Remove(firmEntity);
-			_dbContext.SaveChanges();
+			dbContext.Firms.Remove(firmEntity);
+			dbContext.SaveChanges();
 			return ReactedResult<Firm>.Successful(firmEntity);
 		}
 	}

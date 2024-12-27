@@ -21,7 +21,6 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddHttpClient();
 
 builder.Services.AddScoped<ReportService>();
-builder.Services.AddScoped<KafkaService>();
 builder.Services.AddHostedService<KafkaConsumer>();
 
 builder.Services.AddDbContext<PigeonReportDBContext>(options =>

@@ -8,20 +8,20 @@ using pigeon_lib.Utils;
 
 namespace pigeon_crud_service.Controllers;
 
-[ApiController, Route($"api/v1/{nameof(Location)}/[controller]/[action]")]
+[ApiController, Route($"api/v1/pigeon-crud/[controller]/[action]")]
 public class LocationController : ControllerBase, IController<Location>
 {
-	private readonly IService<Location> _locationService;
+	private readonly IService<Location> locationService;
 
 	public LocationController(IService<Location> locationService)
 	{
-		_locationService = locationService;
+		this.locationService = locationService;
 	}
 
 	[HttpGet(nameof(Get))]
 	public ActionResult<Location> Get(Guid id)
 	{
-		var location = _locationService.Get(id);
+		var location = locationService.Get(id);
 		if (location == null)
 		{
 			return NotFound();
@@ -32,7 +32,7 @@ public class LocationController : ControllerBase, IController<Location>
 	[HttpGet(nameof(GetList))]
 	public ActionResult<List<Location>> GetList()
 	{
-		var locationList = _locationService.GetList();
+		var locationList = locationService.GetList();
 		return Ok(locationList);
 	}
 
@@ -45,25 +45,25 @@ public class LocationController : ControllerBase, IController<Location>
 	[HttpGet(nameof(Filter))]
 	public ActionResult<List<Location>> Filter(IFilterParams filterParams)
 	{
-		var list = _locationService.Filter(filterParams);
+		var list = locationService.Filter(filterParams);
 		return Ok(list);
 	}
 
 	[HttpPost(nameof(Post))]
 	public ActionResult<ReactedResult<Location>> Post(Location t)
 	{
-		return _locationService.Post(t);
+		return locationService.Post(t);
 	}
 
 	[HttpPut(nameof(Put))]
 	public ActionResult<ReactedResult<Location>> Put(Location t)
 	{
-		return _locationService.Put(t);
+		return locationService.Put(t);
 	}
 
 	[HttpDelete(nameof(Delete))]
 	public ActionResult<ReactedResult<Location>> Delete(Guid id)
 	{
-		return _locationService.Delete(id);
+		return locationService.Delete(id);
 	}
 }

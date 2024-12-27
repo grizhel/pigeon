@@ -16,19 +16,17 @@ namespace pigeon_report_service.Utils.Kafka
 		{
 			try
 			{
-				while (!stoppingToken.IsCancellationRequested)
+				using var scope = serviceScopeFactory.CreateScope();
+				var kafkaOptions = scope.ServiceProvider.GetRequiredService<IOptions<KafkaOptions>>().Value;
+				Hermes.Subscribe(kafkaOptions, KafkaTopics.ContactIsCreated.ToString(), (obj) =>
 				{
-					using var scope = serviceScopeFactory.CreateScope();
-					var kafkaService = scope.ServiceProvider.GetRequiredService<KafkaService>();
-					var kafkaOptions = scope.ServiceProvider.GetRequiredService<IOptions<KafkaOptions>>().Value;
-					var contact = await Hermes.Subscribe<IContact>(kafkaOptions, KafkaTopics.ContactIsCreated.ToString());
-					Console.WriteLine(JsonSerializer.Serialize(contact));
-				}
+					Console.WriteLine(obj);
+				});
+				Thread.Sleep(2000);
 			}
 			catch (OperationCanceledException)
 			{
-				// When the stopping token is canceled, for example, a call made from services.msc,
-				// we shouldn't exit with a non-zero exit code. In other words, this is expected...
+				Console.WriteLine("OperationCanceledException");
 			}
 			catch (Exception)
 			{
