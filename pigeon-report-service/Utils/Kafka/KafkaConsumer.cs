@@ -24,9 +24,7 @@ namespace pigeon_report_service.Utils.Kafka
 					Thread.Sleep(2000);
 				}
 				var kafkaOptions = scope.ServiceProvider.GetRequiredService<IOptions<KafkaOptions>>().Value;
-				Hermes.Subscribe(kafkaOptions, KafkaTopics.ContactIsCreated.ToString(), (obj) => reportService.ContactIsAdded(obj != default ? JsonSerializer.Deserialize<IContact>(obj) : default));
-				//Hermes.Subscribe(kafkaOptions, KafkaTopics.ContactIsUpdated.ToString(), (obj) => reportService.ContactIsUpdated(obj != default ? JsonSerializer.Deserialize<IContact>(obj) : default));
-				//Hermes.Subscribe(kafkaOptions, KafkaTopics.ContactIsRemoved.ToString(), (obj) => reportService.ContactIsRemoved(obj != default ? JsonSerializer.Deserialize<IContact>(obj) : default));
+				await Hermes.SubscribeAsync(kafkaOptions, KafkaTopics.ContactIsCreated.ToString(), async (obj) => await reportService.ContactIsAddedAsync(obj != default ? JsonSerializer.Deserialize<object>(obj) : default));
 
 			}
 			catch (OperationCanceledException)

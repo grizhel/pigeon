@@ -12,6 +12,7 @@ public class PigeonReportDBContext : DbContext
 	}
 
 	public DbSet<Report> Reports { get; set; } = null!;
+
 	public DbSet<Info> Info { get; set; } = null!;
 
 	protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)

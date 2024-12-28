@@ -50,9 +50,9 @@ namespace pigeon_crud_service.Services
 
 		public async Task<ReactedResult<Location>> PutAsync(Location location)
 		{
-			var locationEntity = dbContext.Locations.FirstOrDefault(q => q.Id == location.Id);
+			var locationEntity = await dbContext.SaveChangesAsync(); dbContext.Locations.FirstOrDefaultAsync(q => q.Id == location.Id);
 			dbContext.Locations.Update(location);
-			dbContext.SaveChanges();
+			await dbContext.SaveChangesAsync();
 			return ReactedResult<Location>.Successful(location);
 		}
 
@@ -64,7 +64,7 @@ namespace pigeon_crud_service.Services
 				return ReactedResult<Location>.Failed(HttpStatusCode.NotFound, $"There is not any Location with Id of {id}");
 			}
 			dbContext.Locations.Remove(locationEntity);
-			dbContext.SaveChangesAsync();
+			await dbContext.SaveChangesAsync();
 			return ReactedResult<Location>.Successful(locationEntity);
 		}
 	}

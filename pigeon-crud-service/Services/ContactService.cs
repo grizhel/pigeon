@@ -79,7 +79,7 @@ namespace pigeon_crud_service.Services
 		{
 			await dbContext.Contacts.AddAsync(contact);
 			await dbContext.SaveChangesAsync();
-			_ = Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsCreated.ToString(), contact);
+			await  Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsCreated.ToString(), contact);
 			return ReactedResult<Contact>.Successful(contact);
 		}
 
@@ -88,7 +88,7 @@ namespace pigeon_crud_service.Services
 			var contactEntity = await dbContext.Contacts.FirstOrDefaultAsync(q => q.Id == contact.Id);
 			dbContext.Contacts.Update(contact);
 			await dbContext.SaveChangesAsync();
-			_ = Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsUpdated.ToString(), contact);
+			await Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsUpdated.ToString(), contact);
 			return ReactedResult<Contact>.Successful(contact);
 		}
 
@@ -101,7 +101,7 @@ namespace pigeon_crud_service.Services
 			}
 			dbContext.Contacts.Remove(contact);
 			await dbContext.SaveChangesAsync();
-			_ = Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsRemoved.ToString(), contact);
+			await Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsRemoved.ToString(), contact);
 			return ReactedResult<Contact>.Successful(contact);
 		}
 	}

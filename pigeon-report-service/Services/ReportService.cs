@@ -32,41 +32,49 @@ namespace pigeon_report_service.Services
 			throw new NotImplementedException();
 		}
 
-		public async Task ContactIsAdded(IContact? contact)
+		public async Task ContactIsAddedAsync(object contact)
 		{
-			var info = await dBContext.Info.FirstOrDefaultAsync(q => q.InfoType == InfoType.CountOfContacts);
-			if (info == null)
+			try
 			{
-				dBContext.Info.Add(new()
+				var info = await dBContext.Info.FirstOrDefaultAsync(q => q.InfoType == InfoType.CountOfContacts);
+				if (info == null)
 				{
-					InfoType = InfoType.CountOfContacts,
-					Details = new Dictionary<string, string>
-				{
-					{ "Count", "1" }
+					dBContext.Info.Add(new()
+					{
+						InfoType = InfoType.CountOfContacts,
+						Details = new Dictionary<string, string>
+						{
+							{ "Count", "1" }
+						}
+					});
 				}
-				});
+				else
+				{
+					info.Details["Count"] = (int.Parse(info.Details["Count"]) + 1).ToString();
+					dBContext.Info.Update(info);
+				}
+				await dBContext.SaveChangesAsync();
 			}
-			else
+			catch (Exception ex) 
 			{
-				info.Details["Count"] = (int.Parse(info.Details["Count"]) + 1).ToString();
-				dBContext.Info.Update(info);
+				Console.WriteLine(ex.Message);
 			}
 			await dBContext.SaveChangesAsync();
 		}
 
-		public async Task ContactIsRemoved(IContact? contact)
+		public async Task ContactIsRemovedAsync(IContact? contact)
 		{
 			var info = dBContext.Info.FirstOrDefault(q => q.InfoType == InfoType.CountOfContacts);
 			if(info == null)
 			{
-				throw new Exception($"{nameof(ReportService)} - {nameof(ContactIsRemoved)} - a contact cannot remove if there is none in the database. Dirty Data.");
+				throw new Exception($"{nameof(ReportService)} - {nameof(ContactIsRemovedAsync)} - a contact cannot remove if there is none in the database. Dirty Data.");
 			}
 			info.Details["Count"] = (int.Parse(info.Details["Count"]) - 1).ToString();
 			dBContext.Info.Update(info);
 			await dBContext.SaveChangesAsync();
 		}
 
-		public void ContactIsUpdated(IContact? contact)
+		public void ContactIsUpdatedAsync(IContact? contact)
 		{
 			// Other reports??
 		}
