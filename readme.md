@@ -47,7 +47,7 @@ Technologies to Be Used
 - Some features such as logging mechanism are not implemented.
 - The Filter method in the services requires a custom model called IFilterParams as an argument. This part is .
 - Kafka messages sent to the ReportService are designed in a fire-and-forget manner. If there are issues with these messages, the reports may be incorrect. However, this can be managed through a set of background services that will run overnight.
-Access to the ReportService via Kafka is limited to the ContactService. Information is sent to the ReportService whenever a contact is added, deleted, or updated.
+- Access to the ReportService via Kafka is limited to the ContactService. Information is sent to the ReportService whenever a contact is added, deleted, or updated.
 
 
 # Input - Output
@@ -184,4 +184,20 @@ Access to the ReportService via Kafka is limited to the ContactService. Informat
     	}
     ]
 }
+```
+
+## Kafka
+
+After contact is added a kafka message from ContactService (in pigeon-crud-service) to ReportService (in pigeon-report-service). ReportService updates info such as below.
+
+```json
+{
+"Info": [
+	{
+		"Id" : "01940ce6-4247-7b84-8561-0985758aad97",
+		"Details" : "\"Count\"=>\"1\"",
+		"InfoType" : 0
+	}
+]}
+
 ```
