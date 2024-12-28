@@ -12,12 +12,14 @@ public class Location : ILocation
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public Guid Id { get; set; }
 
+	public required LocationType LocationType { get; set; }
+
 	[Column(TypeName = "varchar(64)")]
 	public required string Name { get; set; }
 
-	public string NVIAddress { get; set; }
+	[Column(TypeName = "varchar(16)")]
+	public string? NVIAddress { get; set; }
 
-	public string Address { get; set; }
-
-	public LocationType LocationType { get; set; }
+	[Column(TypeName = "varchar(160)")]
+	public string? Address { get; set; }
 }

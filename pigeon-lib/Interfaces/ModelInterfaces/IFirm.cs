@@ -6,5 +6,5 @@ public interface IFirm
 
 	string Name { get; set; }
 
-	Guid LocationId { get; set; }
+	Guid? LocationId { get; set; }
 }

@@ -14,7 +14,7 @@ public class Firm : IFirm
     [Column(TypeName = "varchar(128)")]
     public required string Name { get; set; }
 
-    public Guid LocationId { get; set; }
+    public Guid? LocationId { get; set; }
 
     public Location? Location { get; set; }
 

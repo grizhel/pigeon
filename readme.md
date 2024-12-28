@@ -31,7 +31,7 @@ Report requests will operate asynchronously. When a user requests a report, the 
 - Required data structure fields:
     - UUID
     - Report Request Date
-    - Report Status (In Progress, Completed)
+    - Report Status (InProgress, Completed)
 
 ## Technical Expectations
 

@@ -12,8 +12,8 @@ namespace pigeon_report_service.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public Guid Id { get; set; }
 
-		public Dictionary<string, string>? Details { get; set; }
+		public required InfoType InfoType { get; set; }
 
-		public InfoType InfoType { get; set; }
+		public required Dictionary<string, string>? Details { get; set; }
 	}
 }

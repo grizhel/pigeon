@@ -22,5 +22,5 @@ public class Contact : IContact
 
 	public Firm? Firm { get; set; }
 
-	public ICollection<ContactInfo>? ContactInformations { get; set; }
+	public ICollection<ContactInformation>? ContactInformations { get; set; }
 }

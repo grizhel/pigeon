@@ -19,9 +19,9 @@ public class ContactController : ControllerBase, IController<Contact>
 	}
 
 	[HttpGet]
-	public async Task<ActionResult<Contact>> GetAsync(Guid id)
+	public async Task<ActionResult<Contact?>> GetAsync(Guid id)
 	{
-		var contact = contactService.GetAsync(id);
+		var contact = await contactService.GetAsync(id);
 		if (contact == null) 
 		{
 			return NotFound();
@@ -29,10 +29,15 @@ public class ContactController : ControllerBase, IController<Contact>
 		return Ok(contact);
 	}
 
+	public async Task<ActionResult<Contact?>> GetDetailsAsync(Guid id)
+	{
+		return await contactService.GetDetailsAsync(id);
+	}
+
 	[HttpGet]
 	public async Task<ActionResult<List<Contact>>> GetListAsync()
 	{
-		var contactList = contactService.GetListAsync();
+		var contactList = await contactService.GetListAsync();
 		return Ok(contactList);
 	}
 
@@ -43,27 +48,34 @@ public class ContactController : ControllerBase, IController<Contact>
 	/// <param name="filterParams"></param>	
 	/// <returns></returns>
 	[HttpGet]
-	public async Task<ActionResult<List<Contact>>> FilterAsync(IFilterParams filterParams)
+	public async Task<ActionResult<List<Contact>>> FilterParamsAsync(IFilterParams filterParams, bool quick = false)
 	{
-		var list = await contactService.FilterAsync(filterParams);
+		var list = await contactService.FilterParamsAsync(filterParams);
+		return Ok(list);
+	}
+
+	[HttpGet]
+	public async Task<ActionResult<List<Contact>>> FilterStringAsync(string searchString, bool quick = false)
+	{
+		var list = await contactService.FilterStringAsync(searchString, quick);
 		return Ok(list);
 	}
 
 	[HttpPost]
 	public async Task<ActionResult<ReactedResult<Contact>>> PostAsync(Contact t)
 	{
-		return await contactService.PostAsync(t);
+		return Ok(await contactService.PostAsync(t));
 	}
 
 	[HttpPut]
 	public async Task<ActionResult<ReactedResult<Contact>>> PutAsync(Contact t)
 	{
-		return await contactService.PutAsync(t);
+		return Ok(await contactService.PutAsync(t));
 	}
 
 	[HttpDelete]
 	public async Task<ActionResult<ReactedResult<Contact>>> DeleteAsync(Guid id)
 	{
-		return await contactService.DeleteAsync(id);
+		return Ok(await contactService.DeleteAsync(id));
 	}
 }

@@ -19,7 +19,7 @@ public class FirmController : ControllerBase, IController<Firm>
 	}
 
 	[HttpGet]
-	public async Task<ActionResult<Firm>> GetAsync(Guid id)
+	public async Task<ActionResult<Firm?>> GetAsync(Guid id)
 	{
 		var firm = await firmService.GetAsync(id);
 		if (firm == null)
@@ -27,6 +27,11 @@ public class FirmController : ControllerBase, IController<Firm>
 			return NotFound();
 		}
 		return Ok(firm);
+	}
+
+	public Task<ActionResult<Firm?>> GetDetailsAsync(Guid id)
+	{
+		throw new NotImplementedException();
 	}
 
 	[HttpGet]
@@ -43,27 +48,34 @@ public class FirmController : ControllerBase, IController<Firm>
 	/// <param name="filterParams"></param>	
 	/// <returns></returns>
 	[HttpGet]
-	public async Task<ActionResult<List<Firm>>> FilterAsync(IFilterParams filterParams)
+	public async Task<ActionResult<List<Firm>>> FilterParamsAsync(IFilterParams filterParams, bool quick = false)
 	{
-		var list = await firmService.FilterAsync(filterParams);
+		var list = await firmService.FilterParamsAsync(filterParams, quick);
+		return Ok(list);
+	}
+
+	[HttpGet]
+	public async Task<ActionResult<List<Firm>>> FilterStringAsync(string seachParam, bool quick = false)
+	{
+		var list = await firmService.FilterStringAsync(seachParam, quick);
 		return Ok(list);
 	}
 
 	[HttpPost]
 	public async Task<ActionResult<ReactedResult<Firm>>> PostAsync(Firm t)
 	{
-		return await firmService.PostAsync(t);
+		throw new NotImplementedException();
 	}
 
 	[HttpPut]
 	public async Task<ActionResult<ReactedResult<Firm>>> PutAsync(Firm t)
 	{
-		return await firmService.PutAsync(t);
+		throw new NotImplementedException();
 	}
 
 	[HttpDelete]
 	public async Task<ActionResult<ReactedResult<Firm>>> DeleteAsync(Guid id)
 	{
-		return await firmService.DeleteAsync(id);
+		throw new NotImplementedException();
 	}
 }

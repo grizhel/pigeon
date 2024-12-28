@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Net.Sockets;
 using System.Reflection.Metadata;
 using Microsoft.AspNetCore.Builder.Extensions;
@@ -45,9 +46,9 @@ namespace pigeon_unit_test
 		/// 2nd Requirement: Remove Contact (Rehberde kişi kaldırma).
 		/// </summary>
 		/// <param name="contactId"></param>
-		public void DeleteContacttAsync(Guid contactId)
+		public async Task DeleteContacttAsync(Guid contactId)
 		{
-
+			await contactService.DeleteAsync(contactId);
 		}
 
 		/// <summary>
@@ -63,9 +64,9 @@ namespace pigeon_unit_test
 		/// <summary>
 		/// 5th Requirement: List contacts (Rehberdeki kişilerin listelenmesi).
 		/// </summary>
-		public async Task GetContactListtAsync()
+		public async Task GetContactListAsync()
 		{
-
+			await contactService.GetListAsync();
 		}
 
 		/// <summary>
@@ -73,9 +74,9 @@ namespace pigeon_unit_test
 		/// (Rehberdeki bir kişiyle ilgili iletişim bilgilerinin de yer aldığı detay bilgilerin getirilmesi).
 		/// </summary>
 		/// <param name="contactId"></param>
-		public async Task GetContactDetailstAsync(Guid contactId)
+		public async Task GetDetailsAsync(Guid contactId)
 		{
-
+			await contactService.GetDetailsAsync(contactId);
 		}
 
 		/// <summary>
@@ -84,7 +85,7 @@ namespace pigeon_unit_test
 		/// </summary>
 		public async Task GetSystematicLocationalReporttAsync() 
 		{
-			Report systematicLocationalReport = await reportService.GetSystematicLocationalReportAsync();
+			var systematicLocationalReport = await reportService.GetSystematicLocationalReportAsync();
 		}
 
 		/// <summary>
@@ -92,7 +93,7 @@ namespace pigeon_unit_test
 		/// </summary>
 		public async Task ListReportstAsync()
 		{
-			List<Report> systematicLocationalReport = await reportService.GetListAsync();
+			var systematicLocationalReport = await reportService.GetListAsync();
 		}
 
 		/// <summary>
@@ -101,39 +102,13 @@ namespace pigeon_unit_test
 		/// <param name="reportId"></param>
 		public async Task GetDetailedReport(Guid reportId)
 		{
-			Report systematicLocationalReport = await reportService.GetDetailedReportAsync(reportId);
+			var systematicLocationalReport = await reportService.GetDetailedReportAsync(reportId);
 		}
 	}
 }
 
 
-/*
-    
-    
-    
-    
-    
-    
-    
-    
-    
- 
-*/
 
-/*
-Rapor basitçe aşağıdaki bilgileri içerecektir:
-
-    Konum Bilgisi
-    O konumda yer alan rehbere kayıtlı kişi sayısı
-    O konumda yer alan rehbere kayıtlı telefon numarası sayısı
-
-Veri yapısı olarak da:
-
-    UUID
-    Raporun Talep Edildiği Tarih
-    Rapor Durumu (Hazırlanıyor, Tamamlandı)
-
-*/
 
 /*
 

@@ -29,16 +29,24 @@ namespace pigeon_crud_service.Services
 			return await dbContext.Locations.FirstOrDefaultAsync(q => q.Id == id);
 		}
 
+		public async Task<Location?> GetDetailsAsync(Guid id)
+		{
+			throw new NotImplementedException();
+		}
+
 		public async Task<List<Location>> GetListAsync()
 		{
 			return [.. await dbContext.Locations.Take(_limitList).ToListAsync()];
 		}
-
-		public async Task<List<Location>> FilterAsync(IFilterParams filterParams)
+		
+		public Task<List<Location>> FilterStringAsync(string searchString, bool quick = false)
 		{
-			throw new NotImplementedException(@"
-								Locations are not filtered. This method is implemented for more complex filtering which is unnecesary at the moment
-								");
+			throw new NotImplementedException();
+		}
+
+		public Task<List<Location>> FilterParamsAsync(IFilterParams filterParams, bool quick = false)
+		{
+			throw new NotImplementedException();
 		}
 
 		public async Task<ReactedResult<Location>> PostAsync(Location location)

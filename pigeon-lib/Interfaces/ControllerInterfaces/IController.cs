@@ -4,18 +4,22 @@ using pigeon_lib.Utils;
 
 namespace pigeon_lib.Interfaces.ControllerInterfaces
 {
-    public interface IController<T> 
-    {
-        Task<ActionResult<T>> GetAsync(Guid id);
+	public interface IController<T>
+	{
+		Task<ActionResult<T?>> GetAsync(Guid id);
 
-        Task<ActionResult<List<T>>> GetListAsync();
+		Task<ActionResult<T?>> GetDetailsAsync(Guid id);
 
-        Task<ActionResult<List<T>>> FilterAsync(IFilterParams filterParams);
+		Task<ActionResult<List<T>>> GetListAsync();
 
-        Task<ActionResult<ReactedResult<T>>> PostAsync(T t);
+		Task<ActionResult<List<T>>> FilterStringAsync(string searchString, bool quick = false);
 
-        Task<ActionResult<ReactedResult<T>>> PutAsync(T t);
+		Task<ActionResult<List<T>>> FilterParamsAsync(IFilterParams filterParams, bool quick = false);
 
-        Task<ActionResult<ReactedResult<T>>> DeleteAsync(Guid id);
-    }
+		Task<ActionResult<ReactedResult<T>>> PostAsync(T t);
+
+		Task<ActionResult<ReactedResult<T>>> PutAsync(T t);
+
+		Task<ActionResult<ReactedResult<T>>> DeleteAsync(Guid id);
+	}
 }

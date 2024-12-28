@@ -4,13 +4,13 @@ using pigeon_lib.Enums;
 
 namespace pigeon_lib.Models.Interfaces.ModelInterfaces;
 
-public interface IContactInfo
+public interface IContactInformation
 {
 	Guid Id { get; set; }
 
-	Guid ContactId { get; set; }
-
 	ContactTypes ContactType { get; set; }
 
-	string Info { get; set; }
+	Guid ContactId { get; set; }
+
+	string Value { get; set; }
 }

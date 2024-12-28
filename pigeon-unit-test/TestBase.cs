@@ -34,8 +34,9 @@ namespace pigeon_unit_test
 				case "EF-InMemory":
 					options = new DbContextOptionsBuilder<PigeonDBContext>()
 							.ConfigureWarnings(x => x.Ignore(CoreEventId.ManyServiceProvidersCreatedWarning))
-							.UseInMemoryDatabase("PigeonDBContext")
+							.UseInMemoryDatabase(nameof(PigeonDBContext))
 							.Options;
+
 					pigeonDBContext = new PigeonDBContext(options, null);
 
 					pigeonDBContext.Database.EnsureDeleted();

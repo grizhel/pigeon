@@ -29,29 +29,24 @@ namespace pigeon_crud_service.Services
 			return await dbContext.Firms.FirstOrDefaultAsync(q => q.Id == id);
 		}
 
+		public Task<Firm> GetDetailsAsync(Guid id)
+		{
+			throw new NotImplementedException();
+		}
+
 		public async Task<List<Firm>> GetListAsync()
 		{
 			return [.. await dbContext.Firms.Take(_limitList).ToListAsync()];
 		}
-
-		public async Task<List<Firm>> FilterAsync(IFilterParams filterParams)
+		
+		public Task<List<Firm>> FilterStringAsync(string searchString, bool quick = false)
 		{
-			var locationIdStr = filterParams.Params.GetValueOrDefault("locationId");
+			throw new NotImplementedException();
+		}
 
-			var queryBuilder = dbContext.Firms.AsQueryable();
-			if (locationIdStr != null)
-			{
-				if (Guid.TryParse(locationIdStr, out var locationId))
-				{
-					queryBuilder = queryBuilder.Where(q => q.Id == locationId);
-				}
-				else
-				{
-					throw new Exception("Firma Id UUID formatında değil veya yanlış.");
-				}
-			}
-
-			return [.. await queryBuilder.Take(_limitList).ToListAsync()];
+		public Task<List<Firm>> FilterParamsAsync(IFilterParams filterParams, bool quick = false)
+		{
+			throw new NotImplementedException();
 		}
 
 		public async Task<ReactedResult<Firm>> PostAsync(Firm firm)

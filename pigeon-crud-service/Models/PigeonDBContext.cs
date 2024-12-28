@@ -18,7 +18,7 @@ public class PigeonDBContext : DbContext
 
 	public DbSet<Location> Locations { get; set; } = null!;
 
-	public DbSet<ContactInfo> ContactInformations { get; set; } = null!;
+	public DbSet<ContactInformation> ContactInformations { get; set; } = null!;
 
 	protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
 	{

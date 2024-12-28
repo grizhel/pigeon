@@ -19,6 +19,7 @@ public static class Scenario
 		var locations = Enumerable.Range(1, 5).Select(i => new Location
 		{
 			Id = Guid.NewGuid(),
+			LocationType = i % 2 == 0 ? LocationType.Home : LocationType.Work,
 			Name = $"Location-{i}",
 			NVIAddress = $"NVI-{i}",
 			Address = $"Address-{i}"
@@ -47,10 +48,10 @@ public static class Scenario
 		return new { locations, contacts, firms, contactInfos = contacts.SelectMany(q=>q.ContactInformations) };
 	}
 
-	private static List<ContactInfo> GenerateRandomContactInfos(Random random, int contactIndex)
+	private static List<ContactInformation> GenerateRandomContactInfos(Random random, int contactIndex)
 	{
 		var contactInfoCount = random.Next(1, 4); // Each contact can have 1 to 3 contact types
-		var contactInfos = new List<ContactInfo>();
+		var contactInfos = new List<ContactInformation>();
 
 		var availableTypes = Enum.GetValues(typeof(ContactTypes)).Cast<ContactTypes>().ToList();
 
@@ -59,12 +60,12 @@ public static class Scenario
 			var contactType = availableTypes[random.Next(availableTypes.Count)];
 			availableTypes.Remove(contactType); // Ensure no duplicate types for this contact
 
-			contactInfos.Add(new ContactInfo
+			contactInfos.Add(new ContactInformation
 			{
 				Id = Guid.NewGuid(),
 				ContactId = Guid.NewGuid(), // Placeholder; in real cases, use the Contact's Id
 				ContactType = contactType,
-				Info = $"{contactType}-Info-{contactIndex}-{i + 1}"
+				Value = $"{contactType}-Info-{contactIndex}-{i + 1}",
 			});
 		}
 
