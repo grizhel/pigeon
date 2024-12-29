@@ -12,15 +12,18 @@ namespace pigeon_crud_service.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "general");
+                name: "crud");
 
             migrationBuilder.CreateTable(
                 name: "Location",
-                schema: "general",
+                schema: "crud",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "varchar(63)", nullable: false)
+                    LocationType = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "varchar(64)", nullable: false),
+                    NVIAddress = table.Column<string>(type: "varchar(16)", nullable: true),
+                    Address = table.Column<string>(type: "varchar(160)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,12 +32,12 @@ namespace pigeon_crud_service.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Firm",
-                schema: "general",
+                schema: "crud",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "varchar(100)", nullable: false),
-                    LocationId = table.Column<Guid>(type: "uuid", nullable: false)
+                    Name = table.Column<string>(type: "varchar(128)", nullable: false),
+                    LocationId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -42,21 +45,20 @@ namespace pigeon_crud_service.Migrations
                     table.ForeignKey(
                         name: "FK_Firm_Location_LocationId",
                         column: x => x.LocationId,
-                        principalSchema: "general",
+                        principalSchema: "crud",
                         principalTable: "Location",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Contact",
-                schema: "general",
+                schema: "crud",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "varchar(63)", nullable: false),
-                    Surname = table.Column<string>(type: "varchar(63)", nullable: false),
-                    FirmId = table.Column<Guid>(type: "uuid", nullable: false)
+                    Name = table.Column<string>(type: "varchar(64)", nullable: false),
+                    Surname = table.Column<string>(type: "varchar(64)", nullable: false),
+                    FirmId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -64,28 +66,28 @@ namespace pigeon_crud_service.Migrations
                     table.ForeignKey(
                         name: "FK_Contact_Firm_FirmId",
                         column: x => x.FirmId,
-                        principalSchema: "general",
+                        principalSchema: "crud",
                         principalTable: "Firm",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ContactInfo",
-                schema: "general",
+                name: "ContactInformation",
+                schema: "crud",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ContactId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ContactType = table.Column<int>(type: "integer", nullable: false)
+                    ContactType = table.Column<int>(type: "integer", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ContactInfo", x => x.Id);
+                    table.PrimaryKey("PK_ContactInformation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ContactInfo_Contact_ContactId",
+                        name: "FK_ContactInformation_Contact_ContactId",
                         column: x => x.ContactId,
-                        principalSchema: "general",
+                        principalSchema: "crud",
                         principalTable: "Contact",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -93,19 +95,19 @@ namespace pigeon_crud_service.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contact_FirmId",
-                schema: "general",
+                schema: "crud",
                 table: "Contact",
                 column: "FirmId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ContactInfo_ContactId",
-                schema: "general",
-                table: "ContactInfo",
+                name: "IX_ContactInformation_ContactId",
+                schema: "crud",
+                table: "ContactInformation",
                 column: "ContactId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Firm_LocationId",
-                schema: "general",
+                schema: "crud",
                 table: "Firm",
                 column: "LocationId");
         }
@@ -114,20 +116,20 @@ namespace pigeon_crud_service.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ContactInfo",
-                schema: "general");
+                name: "ContactInformation",
+                schema: "crud");
 
             migrationBuilder.DropTable(
                 name: "Contact",
-                schema: "general");
+                schema: "crud");
 
             migrationBuilder.DropTable(
                 name: "Firm",
-                schema: "general");
+                schema: "crud");
 
             migrationBuilder.DropTable(
                 name: "Location",
-                schema: "general");
+                schema: "crud");
         }
     }
 }

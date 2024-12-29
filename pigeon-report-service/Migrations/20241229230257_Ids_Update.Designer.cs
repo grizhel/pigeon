@@ -13,8 +13,8 @@ using pigeon_report_service.Models;
 namespace pigeon_report_service.Migrations
 {
     [DbContext(typeof(PigeonReportDBContext))]
-    [Migration("20241227153104_info_report")]
-    partial class info_report
+    [Migration("20241229230257_Ids_Update")]
+    partial class Ids_Update
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,7 +30,7 @@ namespace pigeon_report_service.Migrations
 
             modelBuilder.Entity("pigeon_report_service.Models.Info", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("InfoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -40,25 +40,38 @@ namespace pigeon_report_service.Migrations
                     b.Property<int>("InfoType")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("InfoId");
 
                     b.ToTable("Info", "report");
                 });
 
             modelBuilder.Entity("pigeon_report_service.Models.Report", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("ReportId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime?>("CompleteDate")
+                        .HasColumnType("timestamp");
+
                     b.Property<Dictionary<string, string>>("Details")
+                        .IsRequired()
                         .HasColumnType("hstore");
+
+                    b.Property<DateTime?>("DueDate")
+                        .HasColumnType("timestamp");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(128)");
 
-                    b.HasKey("Id");
+                    b.Property<int>("ReportStatus")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("RequestDate")
+                        .HasColumnType("timestamp");
+
+                    b.HasKey("ReportId");
 
                     b.ToTable("Report", "report");
                 });

@@ -27,7 +27,7 @@ namespace pigeon_report_service.Migrations
 
             modelBuilder.Entity("pigeon_report_service.Models.Info", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("InfoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -37,14 +37,14 @@ namespace pigeon_report_service.Migrations
                     b.Property<int>("InfoType")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("InfoId");
 
                     b.ToTable("Info", "report");
                 });
 
             modelBuilder.Entity("pigeon_report_service.Models.Report", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("ReportId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
@@ -68,7 +68,7 @@ namespace pigeon_report_service.Migrations
                     b.Property<DateTime>("RequestDate")
                         .HasColumnType("timestamp");
 
-                    b.HasKey("Id");
+                    b.HasKey("ReportId");
 
                     b.ToTable("Report", "report");
                 });

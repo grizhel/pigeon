@@ -8,7 +8,7 @@ namespace pigeon_lib.Models.Interfaces.ModelInterfaces;
 
 public interface IContact
 {
-	Guid Id { get; set; }
+	Guid ContactId { get; set; }
 
 	string Name { get; set; }
 

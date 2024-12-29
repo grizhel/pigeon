@@ -10,7 +10,7 @@ public class Location : ILocation
 {
 	[Key]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-	public Guid Id { get; set; }
+	public Guid LocationId { get; set; }
 
 	public required LocationType LocationType { get; set; }
 

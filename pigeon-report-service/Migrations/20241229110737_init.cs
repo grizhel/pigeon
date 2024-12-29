@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace pigeon_report_service.Migrations
 {
     /// <inheritdoc />
-    public partial class info_report : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,8 +24,8 @@ namespace pigeon_report_service.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Details = table.Column<Dictionary<string, string>>(type: "hstore", nullable: true),
-                    InfoType = table.Column<int>(type: "integer", nullable: false)
+                    InfoType = table.Column<int>(type: "integer", nullable: false),
+                    Details = table.Column<Dictionary<string, string>>(type: "hstore", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -39,7 +39,11 @@ namespace pigeon_report_service.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "varchar(128)", nullable: false),
-                    Details = table.Column<Dictionary<string, string>>(type: "hstore", nullable: true)
+                    Details = table.Column<Dictionary<string, string>>(type: "hstore", nullable: false),
+                    RequestDate = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    DueDate = table.Column<DateTime>(type: "timestamp", nullable: true),
+                    CompleteDate = table.Column<DateTime>(type: "timestamp", nullable: true),
+                    ReportStatus = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

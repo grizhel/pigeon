@@ -6,7 +6,7 @@ namespace pigeon_lib.Models.Interfaces.ModelInterfaces;
 
 public interface IContactInformation
 {
-	Guid Id { get; set; }
+	Guid ContactInformationId { get; set; }
 
 	ContactTypes ContactType { get; set; }
 

@@ -3,14 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using pigeon_lib.Enums;
 using pigeon_lib.Interfaces.ModelInterfaces;
 
-namespace pigeon_report_service.Models
+namespace pigeon_report_service.Models.DBModels
 {
 	[Table(nameof(Report))]
 	public class Report : IReport
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public Guid Id { get; set; }
+		public Guid ReportId { get; set; }
 
 		[Column(TypeName = "varchar(128)")]
 		public required string Name { get; set; } = DefaultReports.SystematicLocationalReport.ToString();

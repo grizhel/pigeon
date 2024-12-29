@@ -9,7 +9,7 @@ namespace pigeon_lib.Interfaces.ModelInterfaces
 {
 	public interface IInfo
 	{
-		Guid Id { get; set; }
+		Guid InfoId { get; set; }
 
 		InfoType InfoType { get; set; }
 

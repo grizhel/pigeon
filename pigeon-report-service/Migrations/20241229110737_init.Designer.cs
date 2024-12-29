@@ -13,8 +13,8 @@ using pigeon_report_service.Models;
 namespace pigeon_report_service.Migrations
 {
     [DbContext(typeof(PigeonReportDBContext))]
-    [Migration("20241228150903_updating_models_accordingTo_requirements")]
-    partial class updating_models_accordingTo_requirements
+    [Migration("20241229110737_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

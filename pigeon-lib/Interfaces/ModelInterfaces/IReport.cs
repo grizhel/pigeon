@@ -9,7 +9,7 @@ namespace pigeon_lib.Interfaces.ModelInterfaces
 {
 	public interface IReport
 	{
-		Guid Id { get; set; }
+		Guid ReportId { get; set; }
 
 		string Name { get; set; }
 

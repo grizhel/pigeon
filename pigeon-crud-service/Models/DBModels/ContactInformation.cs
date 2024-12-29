@@ -10,7 +10,7 @@ public class ContactInformation : IContactInformation
 {
 	[Key]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-	public Guid Id { get; set; }
+	public Guid ContactInformationId { get; set; }
 
 	[ForeignKey(nameof(Contact))]
 	public Guid ContactId { get; set; }

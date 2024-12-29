@@ -11,16 +11,16 @@ using pigeon_crud_service.Models;
 
 namespace pigeon_crud_service.Migrations
 {
-    [DbContext(typeof(PigeonDBContext))]
-    [Migration("20241226233024_contact_firm_nullable")]
-    partial class contact_firm_nullable
+    [DbContext(typeof(PigeonCrudDBContext))]
+    [Migration("20241229110713_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("general")
+                .HasDefaultSchema("crud")
                 .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -37,20 +37,20 @@ namespace pigeon_crud_service.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(63)");
+                        .HasColumnType("varchar(64)");
 
                     b.Property<string>("Surname")
                         .IsRequired()
-                        .HasColumnType("varchar(63)");
+                        .HasColumnType("varchar(64)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("FirmId");
 
-                    b.ToTable("Contact", "general");
+                    b.ToTable("Contact", "crud");
                 });
 
-            modelBuilder.Entity("pigeon_crud_service.Models.DBModels.ContactInfo", b =>
+            modelBuilder.Entity("pigeon_crud_service.Models.DBModels.ContactInformation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -62,7 +62,7 @@ namespace pigeon_crud_service.Migrations
                     b.Property<int>("ContactType")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Info")
+                    b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -70,7 +70,7 @@ namespace pigeon_crud_service.Migrations
 
                     b.HasIndex("ContactId");
 
-                    b.ToTable("ContactInfo", "general");
+                    b.ToTable("ContactInformation", "crud");
                 });
 
             modelBuilder.Entity("pigeon_crud_service.Models.DBModels.Firm", b =>
@@ -79,18 +79,18 @@ namespace pigeon_crud_service.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("LocationId")
+                    b.Property<Guid?>("LocationId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(128)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Firm", "general");
+                    b.ToTable("Firm", "crud");
                 });
 
             modelBuilder.Entity("pigeon_crud_service.Models.DBModels.Location", b =>
@@ -100,20 +100,21 @@ namespace pigeon_crud_service.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(160)");
+
+                    b.Property<int>("LocationType")
+                        .HasColumnType("integer");
 
                     b.Property<string>("NVIAddress")
-                        .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("varchar(16)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(63)");
+                        .HasColumnType("varchar(64)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Location", "general");
+                    b.ToTable("Location", "crud");
                 });
 
             modelBuilder.Entity("pigeon_crud_service.Models.DBModels.Contact", b =>
@@ -125,7 +126,7 @@ namespace pigeon_crud_service.Migrations
                     b.Navigation("Firm");
                 });
 
-            modelBuilder.Entity("pigeon_crud_service.Models.DBModels.ContactInfo", b =>
+            modelBuilder.Entity("pigeon_crud_service.Models.DBModels.ContactInformation", b =>
                 {
                     b.HasOne("pigeon_crud_service.Models.DBModels.Contact", "Contact")
                         .WithMany("ContactInformations")
@@ -140,9 +141,7 @@ namespace pigeon_crud_service.Migrations
                 {
                     b.HasOne("pigeon_crud_service.Models.DBModels.Location", "Location")
                         .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LocationId");
 
                     b.Navigation("Location");
                 });
