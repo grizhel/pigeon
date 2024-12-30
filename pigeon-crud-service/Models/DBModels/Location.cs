@@ -22,4 +22,22 @@ public class Location : ILocation
 
 	[Column(TypeName = "varchar(160)")]
 	public string? Address { get; set; }
+
+	public static Dictionary<string, int> GetSystematicLocationalReport(List<Location> locations, List<Contact> contacts)
+	{
+		Dictionary<string, int> locationContactCount = new Dictionary<string, int>();
+		foreach (var location in locations)
+		{
+			var contactCount = contacts.Where(f => f.LocationId == location.LocationId).Count();
+			if(locationContactCount.TryGetValue(location.Name, out contactCount))
+			{
+				locationContactCount[location.Name]++;
+			}
+			else
+			{
+				locationContactCount.Add(location.Name, contactCount);
+			}
+		}
+		return locationContactCount;
+	}
 }

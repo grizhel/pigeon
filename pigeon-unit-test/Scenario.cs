@@ -13,12 +13,12 @@ namespace pigeon_unit_test;
 /// </summary>
 public static class Scenario
 {
-	public static dynamic CreateDbScenario()
+	public static (List<Contact>, List<Location>, List<Firm>, List<ContactInformation>) CreateDbScenario()
 	{
 		// Initialize some sample data for Locations and Firms
 		var locations = Enumerable.Range(1, 5).Select(i => new Location
 		{
-			Id = Guid.NewGuid(),
+			LocationId = Guid.NewGuid(),
 			LocationType = i % 2 == 0 ? LocationType.Home : LocationType.Work,
 			Name = $"Location-{i}",
 			NVIAddress = $"NVI-{i}",
@@ -27,9 +27,9 @@ public static class Scenario
 
 		var firms = Enumerable.Range(1, 10).Select(i => new Firm
 		{
-			Id = Guid.NewGuid(),
+			FirmId = Guid.NewGuid(),
 			Name = $"Firm-{i}",
-			LocationId = locations[i % locations.Count].Id,
+			LocationId = locations[i % locations.Count].LocationId,
 			Location = locations[i % locations.Count]
 		}).ToList();
 
@@ -37,15 +37,17 @@ public static class Scenario
 		var random = new Random();
 		var contacts = Enumerable.Range(1, 50).Select(i => new Contact
 		{
-			Id = Guid.NewGuid(),
+			ContactId = Guid.NewGuid(),
 			Name = $"Name-{i}",
 			Surname = $"Surname-{i}",
-			FirmId = firms[i % firms.Count].Id,
+			FirmId = firms[i % firms.Count].FirmId,
+			LocationId = locations[i % locations.Count].LocationId,
+			Location = locations[i % locations.Count],
 			Firm = firms[i % firms.Count],
 			ContactInformations = GenerateRandomContactInfos(random, i)
 		}).ToList();
 
-		return new { locations, contacts, firms, contactInfos = contacts.SelectMany(q=>q.ContactInformations) };
+		return (contacts, locations, firms, contacts.SelectMany(q => q.ContactInformations!).ToList());
 	}
 
 	private static List<ContactInformation> GenerateRandomContactInfos(Random random, int contactIndex)
@@ -62,7 +64,7 @@ public static class Scenario
 
 			contactInfos.Add(new ContactInformation
 			{
-				Id = Guid.NewGuid(),
+				ContactInformationId = Guid.NewGuid(),
 				ContactId = Guid.NewGuid(), // Placeholder; in real cases, use the Contact's Id
 				ContactType = contactType,
 				Value = $"{contactType}-Info-{contactIndex}-{i + 1}",

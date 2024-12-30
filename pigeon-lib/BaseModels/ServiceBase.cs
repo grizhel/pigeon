@@ -6,9 +6,9 @@ namespace pigeon_lib.BaseModels
 	public class ServiceBase
 	{
 		public readonly int _limitList;
-		public ServiceBase(IOptions<AppOptions> appOptions)
+		public ServiceBase(IOptions<AppOptions> appOptionsCarrier)
 		{
-			_limitList = appOptions.Value.ListLimit;
+			_limitList = appOptionsCarrier.Value.ListLimit;
 		}		
 	}
 }

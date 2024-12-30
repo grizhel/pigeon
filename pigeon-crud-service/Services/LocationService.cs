@@ -17,16 +17,16 @@ namespace pigeon_crud_service.Services
 {
 	public class LocationService : ServiceBase, IService<Location>
 	{
-		private readonly PigeonDBContext dbContext;
+		private readonly PigeonCrudDBContext dbContext;
 
-		public LocationService(PigeonDBContext dbContext, IOptions<AppOptions> appOptions) : base(appOptions)
+		public LocationService(PigeonCrudDBContext dbContext, IOptions<AppOptions> appOptions) : base(appOptions)
 		{
 			this.dbContext = dbContext;
 		}
 
 		public async Task<Location?> GetAsync(Guid id)
 		{
-			return await dbContext.Locations.FirstOrDefaultAsync(q => q.Id == id);
+			return await dbContext.Locations.FirstOrDefaultAsync(q => q.LocationId == id);
 		}
 
 		public async Task<Location?> GetDetailsAsync(Guid id)
@@ -58,7 +58,7 @@ namespace pigeon_crud_service.Services
 
 		public async Task<ReactedResult<Location>> PutAsync(Location location)
 		{
-			var locationEntity = await dbContext.SaveChangesAsync(); dbContext.Locations.FirstOrDefaultAsync(q => q.Id == location.Id);
+			var locationEntity = await dbContext.SaveChangesAsync(); dbContext.Locations.FirstOrDefaultAsync(q => q.LocationId == location.LocationId);
 			dbContext.Locations.Update(location);
 			await dbContext.SaveChangesAsync();
 			return ReactedResult<Location>.Successful(location);
@@ -66,7 +66,7 @@ namespace pigeon_crud_service.Services
 
 		public async Task<ReactedResult<Location>> DeleteAsync(Guid id)
 		{
-			var locationEntity = await dbContext.Locations.FirstOrDefaultAsync(q => q.Id == id);
+			var locationEntity = await dbContext.Locations.FirstOrDefaultAsync(q => q.LocationId == id);
 			if (locationEntity == null)
 			{
 				return ReactedResult<Location>.Failed(HttpStatusCode.NotFound, $"There is not any Location with Id of {id}");

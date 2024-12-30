@@ -17,7 +17,7 @@ namespace pigeon_report_service.Models.DBModels
 
 		public Dictionary<string, string> Details { get; set; } = new Dictionary<string, string>
 						{
-							{ "Location", "1" },
+							{ "Location", "Ankara" },
 							{ "NumberOfContact", "0" },
 							{ "NumberOfContactWithPhoneNumber", "0" }
 						};

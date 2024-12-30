@@ -1,22 +1,26 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using pigeon_crud_service.Models.DBModels;
 using pigeon_lib.Models.Interfaces.ModelInterfaces;
-using pigeon_report_service.Models.DBModels;
 
-namespace pigeon_report_service.Models;
+namespace pigeon_crud_service.Models;
 
-public class PigeonReportDBContext : DbContext
+public class PigeonCrudDBContext : DbContext
 {
 	private readonly IConfiguration configuration;
 
-	public PigeonReportDBContext(DbContextOptions options, IConfiguration configuration) : base(options)
+	public PigeonCrudDBContext(DbContextOptions options, IConfiguration configuration) : base(options)
 	{
 		this.configuration = configuration;
 	}
 
-	public DbSet<Report> Reports { get; set; } = null!;
+	public DbSet<Contact> Contacts { get; set; } = null!;
 
-	public DbSet<Info> Info { get; set; } = null!;
+	public DbSet<Firm> Firms { get; set; } = null!;
+
+	public DbSet<Location> Locations { get; set; } = null!;
+
+	public DbSet<ContactInformation> ContactInformations { get; set; } = null!;
 
 	protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
 	{
@@ -37,8 +41,10 @@ public class PigeonReportDBContext : DbContext
 		{
 			var defaultSchema = "test";
 			modelBuilder.HasDefaultSchema(defaultSchema);
-			modelBuilder.Entity<Report>().ToTable(nameof(Report));
-			modelBuilder.Entity<Info>().ToTable(nameof(Info));
+			modelBuilder.Entity<Contact>().ToTable(nameof(Contact));
+			modelBuilder.Entity<Firm>().ToTable(nameof(Firm));
+			modelBuilder.Entity<Location>().ToTable(nameof(Location));
+			modelBuilder.Entity<ContactInformation>().ToTable(nameof(ContactInformation));
 		}
 		else
 		{
@@ -48,8 +54,12 @@ public class PigeonReportDBContext : DbContext
 
 #else
 
-			var defaultSchema = configuration.GetConnectionString("Pigeon_v1_schema");
-
+		var defaultSchema = configuration.GetConnectionString("Pigeon_v1_schema");
+		modelBuilder.HasDefaultSchema(defaultSchema);
+			
 #endif
+
+
+
 	}
 }

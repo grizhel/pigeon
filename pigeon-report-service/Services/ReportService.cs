@@ -5,6 +5,7 @@ using pigeon_lib.Enums;
 using pigeon_lib.Models.Interfaces.ModelInterfaces;
 using pigeon_lib.Utils;
 using pigeon_report_service.Models;
+using pigeon_report_service.Models.DBModels;
 
 namespace pigeon_report_service.Services
 {
@@ -76,7 +77,12 @@ namespace pigeon_report_service.Services
 
 		public void ContactIsUpdatedAsync(IContact? contact)
 		{
-			// Other reports??
+			throw new NotImplementedException();
+		}
+
+		public async Task<List<Info>> GetInfoListAsync()
+		{
+			return await dBContext.Info.ToListAsync();
 		}
 	}
 }

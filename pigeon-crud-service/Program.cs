@@ -7,7 +7,6 @@ using pigeon_crud_service.Services;
 using Microsoft.EntityFrameworkCore.Migrations;
 using pigeon_lib.Utils;
 using dotnet_third_party_integrations_core.kafka.models;
-using dotnet_third_party_integrations_core.utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +23,7 @@ builder.Services.AddScoped<FirmService>();
 builder.Services.AddScoped<ContactService>();
 builder.Services.AddScoped<LocationService>();
 
-builder.Services.AddDbContext<PigeonDBContext>(options =>
+builder.Services.AddDbContext<PigeonCrudDBContext>(options =>
 {
 	_ = options.UseNpgsql(builder.Configuration.GetConnectionString("Pigeon_v1"), x
 							 => x.MigrationsHistoryTable(HistoryRepository.DefaultTableName,
@@ -71,13 +70,17 @@ var kafkaOptionsSection = builder.Configuration.GetSection("KafkaOptions");
 builder.Services.Configure<KafkaOptions>(kafkaOptionsSection);
 
 
+
+
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
+#if DEBUG
+app.UseSwagger();
+app.UseSwaggerUI();
+using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+using var context = serviceScope.ServiceProvider.GetService<PigeonCrudDBContext>();
+context!.Database.Migrate();
+#endif
 
 app.UseCors(x => x.SetIsOriginAllowed(t => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 

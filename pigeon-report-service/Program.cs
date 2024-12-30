@@ -73,11 +73,14 @@ builder.Services.Configure<KafkaOptions>(kafkaOptionsSection);
 
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
-{
-	app.UseSwagger();
-	app.UseSwaggerUI();
-}
+
+#if DEBUG
+app.UseSwagger();
+app.UseSwaggerUI();
+using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+using var context = serviceScope.ServiceProvider.GetService<PigeonReportDBContext>();
+context!.Database.Migrate();
+#endif
 
 app.UseCors(x => x.SetIsOriginAllowed(t => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 

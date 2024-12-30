@@ -21,30 +21,29 @@ namespace pigeon_crud_service.Services
 {
 	public class ContactService : ServiceBase, IService<Contact>
 	{
-		private readonly PigeonDBContext dbContext;
+		private readonly PigeonCrudDBContext dbContext;
 		private readonly KafkaOptions kafkaOptions;
+		private readonly bool isKafkaRunning;
 
-		public ContactService(PigeonDBContext dbContext, IOptions<AppOptions> appOptions, IOptions<KafkaOptions> kafkaOptions) : base(appOptions)
+		public ContactService(PigeonCrudDBContext dbContext, IOptions<AppOptions> appOptionsCarrier, IOptions<KafkaOptions> kafkaOptionsCarrier) : base(appOptionsCarrier)
 		{
 			this.dbContext = dbContext;
-			this.kafkaOptions = kafkaOptions.Value;
+			this.kafkaOptions = kafkaOptionsCarrier.Value;
+			this.isKafkaRunning = Hermes.IsRunning(kafkaOptionsCarrier.Value);
 		}
 
 		public async Task<Contact?> GetAsync(Guid id)
 		{
-			return await dbContext.Contacts.FirstOrDefaultAsync(q => q.Id == id);
+			return await dbContext.Contacts.FirstOrDefaultAsync(q => q.ContactId == id);
 		}
 
 		public async Task<Contact?> GetDetailsAsync(Guid contactId)
 		{
-			if (dbContext.Contacts.Any())
-			{
-				return await dbContext.Contacts
+			return await dbContext.Contacts
 					.Include(q => q.ContactInformations)
 					.Include(q => q.Firm).ThenInclude(f => f.Location)
-					.FirstOrDefaultAsync(q => q.Id == contactId);
-			}
-			return default;
+					.Include(q => q.Location)
+					.FirstOrDefaultAsync(q => q.ContactId == contactId);
 		}
 
 		public async Task<List<Contact>> GetListAsync()
@@ -77,8 +76,8 @@ namespace pigeon_crud_service.Services
 				{
 					queryBuilder = queryBuilder
 															.Where(q => q.ContactInformations != null && q.ContactInformations
-																		.Where(f => f.ContactType == ContactTypes.Location && f.Id == locationId).Select(t => t.Id)
-																		.Contains(q.Id));
+																		.Where(f => f.ContactType == ContactTypes.Location && f.ContactInformationId == locationId).Select(t => t.ContactInformationId)
+																		.Contains(q.ContactId));
 				}
 				else
 				{
@@ -143,29 +142,38 @@ namespace pigeon_crud_service.Services
 		{
 			await dbContext.Contacts.AddAsync(contact);
 			await dbContext.SaveChangesAsync();
-			await Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsCreated.ToString(), contact);
+			if (isKafkaRunning) 
+			{
+				await Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsCreated.ToString(), contact);
+			}
 			return ReactedResult<Contact>.Successful(contact);
 		}
 
 		public async Task<ReactedResult<Contact>> PutAsync(Contact contact)
 		{
-			var contactEntity = await dbContext.Contacts.FirstOrDefaultAsync(q => q.Id == contact.Id);
+			var contactEntity = await dbContext.Contacts.FirstOrDefaultAsync(q => q.ContactId == contact.ContactId);
 			dbContext.Contacts.Update(contact);
 			await dbContext.SaveChangesAsync();
-			await Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsUpdated.ToString(), contact);
+			if (isKafkaRunning)
+			{
+				await Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsUpdated.ToString(), contact);
+			}
 			return ReactedResult<Contact>.Successful(contact);
 		}
 
 		public async Task<ReactedResult<Contact>> DeleteAsync(Guid id)
 		{
-			var contact = await dbContext.Contacts.FirstOrDefaultAsync(q => q.Id == id);
+			var contact = await dbContext.Contacts.FirstOrDefaultAsync(q => q.ContactId == id);
 			if (contact == null)
 			{
 				return ReactedResult<Contact>.Failed(HttpStatusCode.NotFound, $"There is not any Contact with Id of {id}");
 			}
 			dbContext.Contacts.Remove(contact);
 			await dbContext.SaveChangesAsync();
-			await Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsRemoved.ToString(), contact);
+			if (isKafkaRunning)
+			{
+				await Hermes.SendMessageAsync(kafkaOptions, KafkaTopics.ContactIsRemoved.ToString(), contact);
+			}
 			return ReactedResult<Contact>.Successful(contact);
 		}
 
