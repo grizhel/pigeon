@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pigeon-report-service", "pigeon-report-service\pigeon-report-service.csproj", "{5F04926A-0650-4A09-9EA7-806E2CDCFAB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pigeon-crud-service", "pigeon-crud-service\pigeon-crud-service.csproj", "{54A4175D-B04E-4212-AEB4-BFC05623F9E7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5FEC8E96-FF9E-4ED7-868B-98F7A987136C}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.gitignore = .gitignore
+		LICENSE.txt = LICENSE.txt
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pigeon-unit-test", "pigeon-unit-test\pigeon-unit-test.csproj", "{6DDD73C8-EB82-4503-90A6-2B7DF47B687A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pigeon-lib", "pigeon-lib\pigeon-lib.csproj", "{9C6FBB08-4D6B-44A9-AEEF-643CAF584707}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5F04926A-0650-4A09-9EA7-806E2CDCFAB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F04926A-0650-4A09-9EA7-806E2CDCFAB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F04926A-0650-4A09-9EA7-806E2CDCFAB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F04926A-0650-4A09-9EA7-806E2CDCFAB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54A4175D-B04E-4212-AEB4-BFC05623F9E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54A4175D-B04E-4212-AEB4-BFC05623F9E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54A4175D-B04E-4212-AEB4-BFC05623F9E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54A4175D-B04E-4212-AEB4-BFC05623F9E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DDD73C8-EB82-4503-90A6-2B7DF47B687A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DDD73C8-EB82-4503-90A6-2B7DF47B687A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DDD73C8-EB82-4503-90A6-2B7DF47B687A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DDD73C8-EB82-4503-90A6-2B7DF47B687A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C6FBB08-4D6B-44A9-AEEF-643CAF584707}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C6FBB08-4D6B-44A9-AEEF-643CAF584707}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C6FBB08-4D6B-44A9-AEEF-643CAF584707}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C6FBB08-4D6B-44A9-AEEF-643CAF584707}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

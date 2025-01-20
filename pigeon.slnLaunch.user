@@ -1,0 +1,17 @@
+[
+  {
+    "Name": "Standard",
+    "Projects": [
+      {
+        "Path": "pigeon-report-service\\pigeon-report-service.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "pigeon-crud-service\\pigeon-crud-service.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      }
+    ]
+  }
+]

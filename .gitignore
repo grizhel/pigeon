@@ -1,0 +1,20 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/packages
+/pigeon-lib/bin
+/pigeon-lib/obj/
+/pigeon-crud-service/bin
+/pigeon-crud-service/obj
+/pigeon-report-service/obj
+/pigeon-report-service/bin
+/pigeon-unit-test/bin
+/pigeon-unit-test/obj
+/pigeon-report-service/bin
+/pigeon-report-service/obj
+/pigeon-report-service/appsettings.Development.json
+/pigeon-crud-service/appsettings.Development.json
+/pigeon-report-service/appsettings.Development.json
+/pigeon-crud-service/appsettings.Development.json
