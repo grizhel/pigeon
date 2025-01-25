@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using pigeon_lib.Utils;
 using pigeon_report_service.Services;
 using pigeon_report_service.Models;
-using dotnet_third_party_integrations_core.kafka.models;
 using pigeon_report_service.Utils.Kafka;
+using Grizhla.ThirdPartyIntegrationsCore.kafka.models;
 
 var builder = WebApplication.CreateBuilder(args);
 

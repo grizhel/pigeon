@@ -8,7 +8,6 @@ using System;
 using System.Data.Common;
 using System.Data;
 using Xunit;
-using dotnet_third_party_integrations_core.utils;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
 using pigeon_crud_service.Models;

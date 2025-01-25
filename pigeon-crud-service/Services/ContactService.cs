@@ -2,8 +2,8 @@
 using System.Dynamic;
 using System.Linq;
 using System.Net;
-using dotnet_third_party_integrations_core.kafka.models;
-using dotnet_third_party_integrations_core.Kafka;
+using Grizhla.ThirdPartyIntegrationsCore.kafka.models;
+using Grizhla.ThirdPartyIntegrationsCore.Kafka;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;

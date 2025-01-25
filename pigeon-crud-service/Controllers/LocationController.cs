@@ -19,7 +19,7 @@ public class LocationController : ControllerBase, IController<Location>
 	}
 
 	[HttpGet]
-	public async Task<ActionResult<Location>> GetAsync(Guid id)
+	public async Task<ActionResult<Location?>> GetAsync(Guid id)
 	{
 		var location = await locationService.GetAsync(id);
 		if (location == null)
@@ -49,31 +49,31 @@ public class LocationController : ControllerBase, IController<Location>
 	/// <param name="filterParams"></param>	
 	/// <returns></returns>
 	[HttpGet]
-	public async Task<ActionResult<List<Location>>> FilterParamsAsync(IFilterParams filterParams, bool quick = false)
+	public Task<ActionResult<List<Location>>> FilterParamsAsync(IFilterParams filterParams, bool quick = false)
 	{
 		throw new NotImplementedException();
 	}
 
 	[HttpGet]
-	public async Task<ActionResult<List<Location>>> FilterStringAsync(string searchString, bool quick = false)
+	public Task<ActionResult<List<Location>>> FilterStringAsync(string searchString, bool quick = false)
 	{
 		throw new NotImplementedException();
 	}
 
 	[HttpPost]
-	public async Task<ActionResult<ReactedResult<Location>>> PostAsync(Location t)
+	public Task<ActionResult<ReactedResult<Location>>> PostAsync(Location t)
 	{
 		throw new NotImplementedException();
 	}
 
 	[HttpPut]
-	public async Task<ActionResult<ReactedResult<Location>>> PutAsync(Location t)
+	public Task<ActionResult<ReactedResult<Location>>> PutAsync(Location t)
 	{
 		throw new NotImplementedException();
 	}
 
 	[HttpDelete]
-	public async Task<ActionResult<ReactedResult<Location>>> DeleteAsync(Guid id)
+	public Task<ActionResult<ReactedResult<Location>>> DeleteAsync(Guid id)
 	{
 		throw new NotImplementedException();
 	}

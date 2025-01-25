@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Net.Sockets;
 using System.Reflection.Metadata;
 using System.Text.Json;
-using dotnet_third_party_integrations_core.kafka.models;
+using Grizhla.ThirdPartyIntegrationsCore.kafka.models;
 using Microsoft.AspNetCore.Builder.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

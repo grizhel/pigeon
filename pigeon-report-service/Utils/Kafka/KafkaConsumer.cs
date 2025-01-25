@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
-using dotnet_third_party_integrations_core.kafka.models;
-using dotnet_third_party_integrations_core.Kafka;
+using Grizhla.ThirdPartyIntegrationsCore.kafka.models;
+using Grizhla.ThirdPartyIntegrationsCore.Kafka;
 using Microsoft.Extensions.Options;
 using pigeon_lib.Utils;
 using pigeon_report_service.Services;
